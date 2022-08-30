@@ -141,7 +141,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     AdRequest adRequest = new AdRequest.Builder().build();
     AdsPref adsPref;
-
+    public int splashDelay  = 6000;
     public static Boolean isCountChecked = false;
 
     @Override
@@ -185,16 +185,18 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
         }
 
         if (adsPref.isAdDownloaded()) {
-            if (ConstantAds.PRELOAD_INTERSTITIAL) {
-                loadInterstitialAds(BaseAdsClass.this);
-                loadInterstitialAdsFB(BaseAdsClass.this);
+            if (adsPref.appRunCount() != 1){
+                splashDelay = 4000;
+                loadSplashAd();
+            }else {
+                splashDelay = 6000;
             }
+            loadInterstitialAds(BaseAdsClass.this);
+            loadInterstitialAdsFB(BaseAdsClass.this);
             if (ConstantAds.PRELOAD_REWARD) {
                 loadRewardedAds();
             }
-            if (ConstantAds.PRELOAD_APPOPEN) {
-                loadAppOpenAds();
-            }
+            loadAppOpenAds();
         }
     }
 
@@ -239,18 +241,13 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                             );
                             isLoaded_ADS = true;
 
-                            currentAD = adsPref.adStatus();
-
-                            if (ConstantAds.PRELOAD_INTERSTITIAL) {
-                                loadInterstitialAds(BaseAdsClass.this);
-                                loadInterstitialAdsFB(BaseAdsClass.this);
-                            }
+                            loadInterstitialAds(BaseAdsClass.this);
+                            loadInterstitialAdsFB(BaseAdsClass.this);
                             if (ConstantAds.PRELOAD_REWARD) {
                                 loadRewardedAds();
                             }
-                            if (ConstantAds.PRELOAD_APPOPEN) {
-                                loadAppOpenAds();
-                            }
+                            loadAppOpenAds();
+                            adsPref.setIsAdDownloaded(true);
 
                         }
                     }
@@ -1291,11 +1288,11 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     public void showNativeAd(View nativeView) {
         if (nativeNo == 1) {
-            toast("1");
+            showNativeAd1(nativeView);
         } else if (nativeNo == 2) {
-            toast("2");
+            showNativeAd2(nativeView);
         } else if (nativeNo == 3) {
-            toast("3");
+            showNativeAd3(nativeView);
         }
         setNativeNo();
 
@@ -1726,13 +1723,10 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
 
     public void showInterstitialAd(Activity context, Callable<Void> callable) {
         if (interNo == 1) {
-            toast("1");
             showInterstitial1(context, callable);
         } else if (interNo == 2) {
-            toast("2");
             showInterstitial2(context, callable);
         } else if (interNo == 3) {
-            toast("3");
             showInterstitial3(context, callable);
         } else {
             try {
@@ -5286,23 +5280,30 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     }
 
     public void showSplashAd(Activity context, Callable<Void> callable) {
-        if (adsPref.appRunCount() == 1) {
-            showSplashAdFirst(context, new Callable<Void>() {
-                @Override
-                public Void call() throws Exception {
-                    callable.call();
-                    return null;
+        withDelay(splashDelay, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                if (adsPref.appRunCount() == 1) {
+                    showSplashAdFirst(context, new Callable<Void>() {
+                        @Override
+                        public Void call() throws Exception {
+                            callable.call();
+                            return null;
+                        }
+                    });
+                } else {
+                    showSplashAdSecond(context, new Callable<Void>() {
+                        @Override
+                        public Void call() throws Exception {
+                            callable.call();
+                            return null;
+                        }
+                    });
                 }
-            });
-        } else {
-            showSplashAdSecond(context, new Callable<Void>() {
-                @Override
-                public Void call() throws Exception {
-                    callable.call();
-                    return null;
-                }
-            });
-        }
+                return null;
+            }
+        });
+
     }
 
     public void openLink(String url) {

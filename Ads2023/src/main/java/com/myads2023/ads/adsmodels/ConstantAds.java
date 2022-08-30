@@ -10,9 +10,7 @@ public class ConstantAds {
     public static ProgressDialog pDialogDelay = null;
     public static int adCountDefault = 3;
     public static int AD_DELAY = 1500;
-    public static boolean PRELOAD_INTERSTITIAL = true;
     public static boolean PRELOAD_REWARD = false;
-    public static boolean PRELOAD_APPOPEN = false;
     public static String AD_MESSAGE = "Showing Ad...";
     public static String adUrlId = "";
     public static String ihAdsID = "";
@@ -34,14 +32,8 @@ public class ConstantAds {
     public static String setAdsUrlID(String url){
         return adUrlId = url;
     }
-    public static Boolean preloadInterstitial(Boolean preload){
-        return PRELOAD_INTERSTITIAL = preload;
-    }
     public static Boolean preloadRewarded(Boolean preload){
         return PRELOAD_REWARD = preload;
-    }
-    public static Boolean preloadAppopen(Boolean preload){
-        return PRELOAD_APPOPEN = preload;
     }
 
     public static void showProgress(Activity context){
