@@ -6,7 +6,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <application>
+    <application
+        android:name=".ads.adutils.SimpleAds2023"
+        android:networkSecurityConfig="@xml/network_security_config">
 
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
