@@ -1,4 +1,4 @@
-package com.myads2023.ads.adsmodels;
+package com.myads2023.ads.gmodels;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

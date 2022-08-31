@@ -1,4 +1,4 @@
-package com.myads2023.ads.NetworkListner;
+package com.myads2023.ads.gNetworkListner;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
-import com.myads2023.ads.Interfaces.OnNetworkChangeListner;
+import com.myads2023.ads.gInterfaces.OnNetworkChangeListner;
 
 import java.util.HashSet;
 import java.util.Set;

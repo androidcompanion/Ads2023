@@ -1,4 +1,4 @@
-package com.myads2023.ads.adsmodels;
+package com.myads2023.ads.gmodels;
 
 import android.app.Activity;
 import android.app.ProgressDialog;

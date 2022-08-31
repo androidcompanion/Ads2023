@@ -1,4 +1,4 @@
-package com.myads2023.ads.Interfaces;
+package com.myads2023.ads.gInterfaces;
 
 public interface OnCheckServiceListner {
     void onButton1Clicked(String url);

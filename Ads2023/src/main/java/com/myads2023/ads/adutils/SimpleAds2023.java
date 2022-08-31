@@ -6,9 +6,9 @@ import com.facebook.ads.AudienceNetworkAds;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-import com.myads2023.ads.adsmodels.AdsPref;
+import com.myads2023.ads.gmodels.AdsPref;
 
-public class NewAds2021 extends Application {
+public class SimpleAds2023 extends Application {
     private static AppOpenManager appOpenManager;
 
     @Override

@@ -2,7 +2,7 @@ package com.myads2023.ads.adutils;
 
 import static androidx.lifecycle.Lifecycle.Event.ON_START;
 
-import static com.myads2023.ads.adutils.BaseAdsClass.isConnected;
+import static com.myads2023.ads.adutils.BaseSimpleClass.isConnected;
 
 import android.app.Activity;
 import android.app.Application;
@@ -19,14 +19,14 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.FullScreenContentCallback;
 import com.google.android.gms.ads.LoadAdError;
 import com.google.android.gms.ads.appopen.AppOpenAd;
-import com.myads2023.ads.adsmodels.AdsPref;
-import com.myads2023.ads.adsmodels.ConstantAds;
+import com.myads2023.ads.gmodels.AdsPref;
+import com.myads2023.ads.gmodels.ConstantAds;
 
 import java.util.Date;
 
 
 public class AppOpenManager implements LifecycleObserver, Application.ActivityLifecycleCallbacks {
-    private final NewAds2021 myApplication;
+    private final SimpleAds2023 myApplication;
     private static final String LOG_TAG = "AppOpenManager";
 //    private static String AD_UNIT_ID = "";
     private AppOpenAd appOpenAd = null;
@@ -42,7 +42,7 @@ public class AppOpenManager implements LifecycleObserver, Application.ActivityLi
     /**
      * Constructor
      */
-    public AppOpenManager(NewAds2021 myApplication) {
+    public AppOpenManager(SimpleAds2023 myApplication) {
         this.myApplication = myApplication;
         adsPref = new AdsPref(myApplication.getApplicationContext());
 //        AD_UNIT_ID = adsPref.gAppopen2();

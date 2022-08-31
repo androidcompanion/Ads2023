@@ -1,8 +1,8 @@
 package com.myads2023.ads.adutils;
 
 
-import static com.myads2023.ads.adsmodels.ConstantAds.dismisProgress;
-import static com.myads2023.ads.adsmodels.ConstantAds.showProgress;
+import static com.myads2023.ads.gmodels.ConstantAds.dismisProgress;
+import static com.myads2023.ads.gmodels.ConstantAds.showProgress;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -11,8 +11,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -21,13 +19,10 @@ import android.os.Handler;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -72,20 +67,20 @@ import com.google.android.gms.ads.rewarded.RewardItem;
 import com.google.android.gms.ads.rewarded.RewardedAd;
 import com.google.android.gms.ads.rewarded.RewardedAdLoadCallback;
 import com.myads2023.R;
-import com.myads2023.ads.Interfaces.InhouseBannerListener;
-import com.myads2023.ads.Interfaces.InhouseInterstitialListener;
-import com.myads2023.ads.Interfaces.InhouseNativeListener;
-import com.myads2023.ads.Interfaces.OnRewardAdClosedListener;
-import com.myads2023.ads.NetworkListner.NetworkStateReceiver;
-import com.myads2023.ads.adsmodels.API;
-import com.myads2023.ads.adsmodels.AdsData;
-import com.myads2023.ads.adsmodels.AdsDetails;
-import com.myads2023.ads.adsmodels.AdsPref;
-import com.myads2023.ads.adsmodels.ConstantAds;
-import com.myads2023.ads.adsmodels.IHAPI;
-import com.myads2023.ads.adsmodels.IHAdsData;
-import com.myads2023.ads.adsmodels.IhAdsDetail;
-import com.myads2023.ads.nativeadtemplate.TemplateView;
+import com.myads2023.ads.gInterfaces.InhouseBannerListener;
+import com.myads2023.ads.gInterfaces.InhouseInterstitialListener;
+import com.myads2023.ads.gInterfaces.InhouseNativeListener;
+import com.myads2023.ads.gInterfaces.OnRewardAdClosedListener;
+import com.myads2023.ads.gNetworkListner.NetworkStateReceiver;
+import com.myads2023.ads.gmodels.API;
+import com.myads2023.ads.gmodels.AdsData;
+import com.myads2023.ads.gmodels.AdsDetails;
+import com.myads2023.ads.gmodels.AdsPref;
+import com.myads2023.ads.gmodels.ConstantAds;
+import com.myads2023.ads.gmodels.IHAPI;
+import com.myads2023.ads.gmodels.IHAdsData;
+import com.myads2023.ads.gmodels.IhAdsDetail;
+import com.myads2023.ads.gnativeadtemplate.TemplateView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -98,7 +93,7 @@ import retrofit2.Call;
 import retrofit2.Response;
 
 //"AKfycbwWa0oIwNsZ4b7b-aIGi61iyJ98XFCy2kbfXNC-ZhiIkHtlHu2R88r-gzHc7eigJykh7A/exec"
-public class BaseAdsClass extends AppCompatActivity implements NetworkStateReceiver.NetworkStateReceiverListener {
+public class BaseSimpleClass extends AppCompatActivity implements NetworkStateReceiver.NetworkStateReceiverListener {
 
 
     private NetworkStateReceiver networkStateReceiver;
@@ -191,8 +186,8 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             }else {
                 splashDelay = 6000;
             }
-            loadInterstitialAds(BaseAdsClass.this);
-            loadInterstitialAdsFB(BaseAdsClass.this);
+            loadInterstitialAds(BaseSimpleClass.this);
+            loadInterstitialAdsFB(BaseSimpleClass.this);
             if (ConstantAds.PRELOAD_REWARD) {
                 loadRewardedAds();
             }
@@ -210,7 +205,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                     if (adsDetails.getAdsData() != null) {
                         adsDetailsArrayList = adsDetails.getAdsData();
                         AdsData ads = adsDetailsArrayList.get(0);
-                        adsPref = new AdsPref(BaseAdsClass.this);
+                        adsPref = new AdsPref(BaseSimpleClass.this);
                         if (adsDetailsArrayList != null && adsDetailsArrayList.size() > 0) {
                             adsPref.setAdsDefaults(ads.getAdsStatus(), ads.getShowLoading(),
                                     ads.getgAppId(),
@@ -241,8 +236,8 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                             );
                             isLoaded_ADS = true;
 
-                            loadInterstitialAds(BaseAdsClass.this);
-                            loadInterstitialAdsFB(BaseAdsClass.this);
+                            loadInterstitialAds(BaseSimpleClass.this);
+                            loadInterstitialAdsFB(BaseSimpleClass.this);
                             if (ConstantAds.PRELOAD_REWARD) {
                                 loadRewardedAds();
                             }
@@ -793,7 +788,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     }
 
     void showAdsPrivacyDialog() {
-        Dialog privacyDialog = new Dialog(BaseAdsClass.this);
+        Dialog privacyDialog = new Dialog(BaseSimpleClass.this);
         privacyDialog.setContentView(R.layout.ads_privacy_dialog);
         Objects.requireNonNull(privacyDialog.getWindow()).setBackgroundDrawableResource(android.R.color.transparent);
         privacyDialog.setCancelable(false);
@@ -5022,7 +5017,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
                         super.onAdLoaded(appOpenAd);
                         appOpenAd1 = appOpenAd;
                         if (appOpenAd1 != null) {
-                            appOpenAd1.show(BaseAdsClass.this);
+                            appOpenAd1.show(BaseSimpleClass.this);
                             appOpenAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
                                 public void onAdDismissedFullScreenContent() {
                                     try {
@@ -5092,7 +5087,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     
     public void showAppOpen1Splash(Activity context, Callable<Void> callable) {
         if (appOpenAd1 != null) {
-            appOpenAd1.show(BaseAdsClass.this);
+            appOpenAd1.show(BaseSimpleClass.this);
             appOpenAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
                 public void onAdDismissedFullScreenContent() {
                     try {
@@ -5121,7 +5116,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     public void showAppOpen2(Activity context, Callable<Void> callable) {
         if (currentAD % adsPref.adStatus() == 0 && isConnected(this)) {
             if (appOpenAd2 != null) {
-                appOpenAd2.show(BaseAdsClass.this);
+                appOpenAd2.show(BaseSimpleClass.this);
                 ConstantAds.IS_APP_KILLED = true;
                 ConstantAds.IS_INTER_SHOWING = true;
                 appOpenAd2.setFullScreenContentCallback(new FullScreenContentCallback() {
@@ -5163,7 +5158,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
     public void showAppOpen3(Activity context, Callable<Void> callable) {
         if (currentAD % adsPref.adStatus() == 0 && isConnected(this)) {
             if (appOpenAd3 != null) {
-                appOpenAd3.show(BaseAdsClass.this);
+                appOpenAd3.show(BaseSimpleClass.this);
                 ConstantAds.IS_APP_KILLED = true;
                 ConstantAds.IS_INTER_SHOWING = true;
                 appOpenAd3.setFullScreenContentCallback(new FullScreenContentCallback() {
@@ -5284,6 +5279,7 @@ public class BaseAdsClass extends AppCompatActivity implements NetworkStateRecei
             @Override
             public Void call() throws Exception {
                 if (adsPref.appRunCount() == 1) {
+
                     showSplashAdFirst(context, new Callable<Void>() {
                         @Override
                         public Void call() throws Exception {
