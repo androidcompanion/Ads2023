@@ -18,14 +18,11 @@ public class SimpleAds2023 extends Application {
                 this,
                 new OnInitializationCompleteListener() {
                     @Override
-                    public void onInitializationComplete(InitializationStatus initializationStatus) {}
+                    public void onInitializationComplete(InitializationStatus initializationStatus) {
+                    }
                 });
         AudienceNetworkAds.initialize(this);
-//        AudienceNetworkAds.initialize(getApplicationContext());
-        if (new AdsPref(this).appRunCount() != 1){
-            appOpenManager = new AppOpenManager(this);
-        }
-
+        appOpenManager = new AppOpenManager(this);
 
 
     }

@@ -20,9 +20,6 @@ public class ConstantAds {
     public static String setIHAdsID(String url){
         return ihAdsID = url;
     }
-    public static String setFBAdsID(String url){
-        return fbAdsID = url;
-    }
     public static String setIHInterID(String url){
         return ihInterID = url;
     }

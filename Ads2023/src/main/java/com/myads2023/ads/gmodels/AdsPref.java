@@ -44,6 +44,10 @@ public class AdsPref {
                                Boolean extra_boolean1,Boolean extra_boolean2,Boolean extra_boolean3,Boolean extra_boolean4,
                                Integer extra_integer1,Integer extra_integer2,Integer extra_integer3,Integer extra_integer4,
 
+
+                               String l1, String l2,  String l3, Integer lc, Integer lof, Boolean fl,
+                               Integer ctc, Integer ctdelay, Boolean cts,
+
                                Boolean isUpdate, Boolean isAds, Boolean isNotification,
 
                                String ad_dialog_title, String ad_app_name, String ad_app_short_desc, String ad_message,
@@ -108,6 +112,16 @@ public class AdsPref {
             editor.putInt("extra_integer2", extra_integer2);
             editor.putInt("extra_integer3", extra_integer3);
             editor.putInt("extra_integer4", extra_integer4);
+
+            editor.putString("l1", l1);
+            editor.putString("l2", l2);
+            editor.putString("l3", l2);
+            editor.putInt("lc", lc);
+            editor.putInt("lof", lof);
+            editor.putBoolean("fl", fl);
+            editor.putInt("ctc", ctc);
+            editor.putInt("ctdelay", ctdelay);
+            editor.putBoolean("cts", cts);
 
             editor.putBoolean("isUpdate", isUpdate);
             editor.putBoolean("isAds", isAds);
@@ -567,7 +581,45 @@ public class AdsPref {
         return var;
     }
 
+    public String l1() {
+        return adsPreference.getString("l1", "https://");
+    }
 
+    public String l2() {
+        return adsPreference.getString("l2", "https://");
+    }
+
+    public String l3() {
+        return adsPreference.getString("l3", "https://");
+    }
+
+    public int lc() {
+        return adsPreference.getInt("lc", 0);
+    }
+
+    public int ctc() {
+        return adsPreference.getInt("ctc", 0);
+    }
+
+    public int ctdelay() {
+        return adsPreference.getInt("ctdelay", 0);
+    }
+
+    public Boolean cts() {
+        return adsPreference.getBoolean("cts", false);
+    }
+    public int lof() {
+        return adsPreference.getInt("lof", 0);
+    }
+
+
+    public boolean fl() {
+        boolean output = false;
+        if (adsPreference != null) {
+            output = adsPreference.getBoolean("fl", false);
+        }
+        return output;
+    }
 
     public boolean isUpdate() {
         boolean output = false;

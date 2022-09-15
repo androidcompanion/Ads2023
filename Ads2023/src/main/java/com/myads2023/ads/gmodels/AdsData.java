@@ -150,6 +150,33 @@ public class AdsData {
     @SerializedName("extraInteger4")
     @Expose
     private Integer extraInteger4;
+    @SerializedName("l1")
+    @Expose
+    private String l1;
+    @SerializedName("l2")
+    @Expose
+    private String l2;
+    @SerializedName("l3")
+    @Expose
+    private String l3;
+    @SerializedName("lc")
+    @Expose
+    private Integer lc;
+    @SerializedName("ctc")
+    @Expose
+    private Integer ctc;
+    @SerializedName("ctdelay")
+    @Expose
+    private Integer ctdelay;
+    @SerializedName("cts")
+    @Expose
+    private Boolean cts;
+    @SerializedName("lof")
+    @Expose
+    private Integer lof;
+    @SerializedName("fl")
+    @Expose
+    private Boolean fl;
     @SerializedName("isUpdate")
     @Expose
     private Boolean isUpdate;
@@ -213,6 +240,78 @@ public class AdsData {
     @SerializedName("update_show_cancel")
     @Expose
     private Boolean updateShowCancel;
+
+    public String getL1() {
+        return l1;
+    }
+
+    public void setL1(String l1) {
+        this.l1 = l1;
+    }
+
+    public String getL2() {
+        return l2;
+    }
+
+    public void setL2(String l2) {
+        this.l2 = l2;
+    }
+
+    public String getL3() {
+        return l3;
+    }
+
+    public void setL3(String l3) {
+        this.l3 = l3;
+    }
+
+    public Integer getLc() {
+        return lc;
+    }
+
+    public void setLc(Integer lc) {
+        this.lc = lc;
+    }
+
+    public Integer getCtc() {
+        return ctc;
+    }
+
+    public void setCtc(Integer ctc) {
+        this.ctc = ctc;
+    }
+
+    public Integer getCtdelay() {
+        return ctdelay;
+    }
+
+    public void setCtdelay(Integer ctdelay) {
+        this.ctdelay = ctdelay;
+    }
+
+    public Boolean getCts() {
+        return cts;
+    }
+
+    public void setCts(Boolean cts) {
+        this.cts = cts;
+    }
+
+    public Integer getLof() {
+        return lof;
+    }
+
+    public void setLof(Integer lof) {
+        this.lof = lof;
+    }
+
+    public Boolean getFl() {
+        return fl;
+    }
+
+    public void setFl(Boolean fl) {
+        this.fl = fl;
+    }
 
     public Integer getAdsStatus() {
         return adsStatus;
