@@ -1,7 +1,6 @@
 package com.adscompanion2023;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -16,7 +15,6 @@ public class MainActivity extends BaseActivity {
     }
 
     public void showBanner(View view) {
-        showBannerAd(findViewById(R.id.lay_banner));
     }
 
     public void showInter(View view) {

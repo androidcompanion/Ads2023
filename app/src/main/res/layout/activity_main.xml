@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:weightSum="2">
+        android:weightSum="3">
 
         <Button
             android:onClick="showAppServiceDialog"
@@ -47,6 +47,11 @@
         <Button
             android:onClick="showSmallNative"
             android:text="SmallNative"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+        <Button
+            android:text="Splash"
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
