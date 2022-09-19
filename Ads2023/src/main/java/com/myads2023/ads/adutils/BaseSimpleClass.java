@@ -548,7 +548,6 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                             @Override
                             public Void call() throws Exception {
                                 lay_close_ad.setVisibility(View.VISIBLE);
-
                                 return null;
 
                             }
