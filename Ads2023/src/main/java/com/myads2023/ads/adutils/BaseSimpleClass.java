@@ -145,7 +145,6 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
 
     AdRequest adRequest = new AdRequest.Builder().build();
     AdsPref adsPref;
-    public int splashDelay = 6000;
     public static Boolean isCountChecked = false;
     public static int ac = 0;
     public static int dlc = 1;
@@ -191,18 +190,11 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
             AudienceNetworkAds.initialize(this);
         }
         if (adsPref.isAdDownloaded()) {
-            if (adsPref.appRunCount() != 1) {
-                splashDelay = 4000;
-                loadSplashAd();
-            } else {
-                splashDelay = 6000;
-            }
             loadInterstitialAds(BaseSimpleClass.this);
             loadInterstitialAdsFB(BaseSimpleClass.this);
             if (ConstantAds.PRELOAD_REWARD) {
                 loadRewardedAds();
             }
-            loadAppOpenAds();
         }
         if (isLoaded_ADS) {
             callCast(BaseSimpleClass.this);
@@ -321,7 +313,6 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                             if (ConstantAds.PRELOAD_REWARD) {
                                 loadRewardedAds();
                             }
-                            loadAppOpenAds();
                             adsPref.setIsAdDownloaded(true);
 
                         }
@@ -1043,11 +1034,6 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
         loadRewardAd1();
         loadRewardAd2();
         loadRewardAd3();
-    }
-
-    void loadAppOpenAds() {
-        loadAppOpen2();
-        loadAppOpen3();
     }
 
     public void AppService(String versionName) {
@@ -1990,44 +1976,6 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
 
     }
 
-    void showInterstitial1Splash(Activity context, Callable<Void> params) {
-        if (mInterstitialAd1 != null) {
-            mInterstitialAd1.show((Activity) context);
-            ConstantAds.IS_APP_KILLED = true;
-            ConstantAds.IS_INTER_SHOWING = true;
-            mInterstitialAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
-                @Override
-                public void onAdDismissedFullScreenContent() {
-                    ConstantAds.IS_APP_KILLED = false;
-                    ConstantAds.IS_INTER_SHOWING = false;
-                    loadInterstitial1();
-                    try {
-                        params.call();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onAdFailedToShowFullScreenContent(AdError adError) {
-                    mInterstitialAd1 = null;
-                    try {
-                        params.call();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onAdShowedFullScreenContent() {
-                    mInterstitialAd1 = null;
-                }
-            });
-        } else {
-            showInterstitial1FB(context, params);
-        }
-    }
-
     void showInterstitial1(Activity context, Callable<Void> params) {
         if (currentAD % adsPref.adStatus() == 0 && isConnected(this)) {
             if (mInterstitialAd1 != null) {
@@ -2269,116 +2217,6 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
         }
         currentAD++;
 
-    }
-
-    void showInterstitial1FBSplash(Activity context, Callable<Void> params) {
-        if (isConnected(this)) {
-            if (interstitialAd1 == null) {
-                interstitialAd1 = new com.facebook.ads.InterstitialAd(this, adsPref.fbInter1());
-                InterstitialAdListener interstitialAdListener = new InterstitialAdListener() {
-                    @Override
-                    public void onInterstitialDisplayed(Ad ad) {
-
-                    }
-
-                    @Override
-                    public void onInterstitialDismissed(Ad ad) {
-                        loadInterstitial1FB();
-                        try {
-                            params.call();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onError(Ad ad, com.facebook.ads.AdError adError) {
-                        interstitialAd1 = null;
-                        try {
-                            params.call();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-
-                    @Override
-                    public void onAdLoaded(Ad ad) {
-                        if (interstitialAd1 != null && interstitialAd1.isAdLoaded() && !interstitialAd1.isAdInvalidated()) {
-                            try {
-                                params.call();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            interstitialAd1.show();
-                            interstitialAd1 = null;
-                        } else {
-                            showInhouseInterAd(context, new InhouseInterstitialListener() {
-                                @Override
-                                public void onAdShown() {
-
-                                }
-
-                                @Override
-                                public void onAdDismissed() {
-                                    try {
-                                        params.call();
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                            });
-                        }
-                    }
-
-                    @Override
-                    public void onAdClicked(Ad ad) {
-
-                    }
-
-                    @Override
-                    public void onLoggingImpression(Ad ad) {
-
-                    }
-                };
-                interstitialAd1.loadAd(
-                        interstitialAd1.buildLoadAdConfig()
-                                .withAdListener(interstitialAdListener)
-                                .build());
-            } else {
-                if (interstitialAd1.isAdLoaded() && !interstitialAd1.isAdInvalidated()) {
-                    try {
-                        params.call();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    interstitialAd1.show();
-                    interstitialAd1 = null;
-                } else {
-                    showInhouseInterAd(context, new InhouseInterstitialListener() {
-                        @Override
-                        public void onAdShown() {
-
-                        }
-
-                        @Override
-                        public void onAdDismissed() {
-                            try {
-                                params.call();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    });
-                }
-            }
-        } else {
-            try {
-                params.call();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     void showInterstitial1FB(Activity context, Callable<Void> params) {
@@ -5189,25 +5027,6 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
 
     }
 
-    public void loadSplashAd() {
-        if (isConnected(this)) {
-            loadInterstitial1FB();
-            AppOpenAd.load((Context) this, adsPref.gAppopen1(), new AdRequest.Builder().build(), 1, new AppOpenAd.AppOpenAdLoadCallback() {
-                @Override
-                public void onAdLoaded(@NonNull AppOpenAd appOpenAd) {
-                    super.onAdLoaded(appOpenAd);
-                    appOpenAd1 = appOpenAd;
-                }
-
-                @Override
-                public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                    super.onAdFailedToLoad(loadAdError);
-                    appOpenAd1 = null;
-                }
-            });
-        }
-    }
-
     public void loadAppOpen2() {
         if (isConnected(this)) {
             AppOpenAd.load((Context) this, adsPref.gAppopen2(), new AdRequest.Builder().build(), 1, new AppOpenAd.AppOpenAdLoadCallback() {
@@ -5242,109 +5061,6 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                 }
             });
         }
-    }
-
-    void showSplashAdFirst(Activity context, Callable<Void> callable) {
-        if (isConnected(this)) {
-            AppOpenAd.load((Context) this, adsPref.gAppopen1(), new AdRequest.Builder().build(), 1, new AppOpenAd.AppOpenAdLoadCallback() {
-                @Override
-                public void onAdLoaded(@NonNull AppOpenAd appOpenAd) {
-                    super.onAdLoaded(appOpenAd);
-                    appOpenAd1 = appOpenAd;
-                    if (appOpenAd1 != null) {
-                        appOpenAd1.show(BaseSimpleClass.this);
-                        appOpenAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
-                            public void onAdDismissedFullScreenContent() {
-                                try {
-                                    callable.call();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-
-                            public void onAdFailedToShowFullScreenContent(AdError adError) {
-                                appOpenAd1 = null;
-                                showInhouseInterAd(context, new InhouseInterstitialListener() {
-                                    @Override
-                                    public void onAdShown() {
-
-                                    }
-
-                                    @Override
-                                    public void onAdDismissed() {
-                                        try {
-                                            callable.call();
-                                        } catch (Exception e) {
-                                            e.printStackTrace();
-                                        }
-                                    }
-                                });
-                            }
-
-                            public void onAdShowedFullScreenContent() {
-                                appOpenAd1 = null;
-                            }
-                        });
-                    }
-                }
-
-                @Override
-                public void onAdFailedToLoad(@NonNull LoadAdError loadAdError) {
-                    super.onAdFailedToLoad(loadAdError);
-                    appOpenAd1 = null;
-                    showInterstitial1FBSplash(context, callable);
-                }
-            });
-        } else {
-            try {
-                callable.call();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        currentAD++;
-
-    }
-
-    void showSplashAdSecond(Activity context, Callable<Void> callable) {
-        if (isConnected(this)) {
-            showAppOpen1Splash(context, callable);
-            currentAD++;
-        } else {
-            try {
-                callable.call();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void showAppOpen1Splash(Activity context, Callable<Void> callable) {
-        if (appOpenAd1 != null) {
-            appOpenAd1.show(BaseSimpleClass.this);
-            appOpenAd1.setFullScreenContentCallback(new FullScreenContentCallback() {
-                public void onAdDismissedFullScreenContent() {
-                    try {
-                        callable.call();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                }
-
-                public void onAdFailedToShowFullScreenContent(AdError adError) {
-                    appOpenAd1 = null;
-                    showInterstitial1FB(context, callable);
-                }
-
-                public void onAdShowedFullScreenContent() {
-                    appOpenAd1 = null;
-                }
-            });
-        } else {
-            showInterstitial1FB(context, callable);
-        }
-
     }
 
     public void showAppOpen2(Activity context, Callable<Void> callable) {
@@ -5505,33 +5221,6 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
     @Override
     public void networkUnavailable() {
         IS_NETWORK_GONE = true;
-    }
-
-    public void showSplashAd(Activity context, Callable<Void> callable) {
-        withDelay(splashDelay, new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                if (adsPref.appRunCount() == 1) {
-                    showSplashAdFirst(context, new Callable<Void>() {
-                        @Override
-                        public Void call() throws Exception {
-                            callable.call();
-                            return null;
-                        }
-                    });
-                } else {
-                    showSplashAdSecond(context, new Callable<Void>() {
-                        @Override
-                        public Void call() throws Exception {
-                            callable.call();
-                            return null;
-                        }
-                    });
-                }
-                return null;
-            }
-        });
-
     }
 
     public void openLink(String url) {
