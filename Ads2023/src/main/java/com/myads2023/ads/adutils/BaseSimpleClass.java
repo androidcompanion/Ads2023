@@ -44,6 +44,7 @@ import androidx.cardview.widget.CardView;
 import com.bumptech.glide.Glide;
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdOptionsView;
+import com.facebook.ads.AudienceNetworkAds;
 import com.facebook.ads.InterstitialAdListener;
 import com.facebook.ads.MediaView;
 import com.facebook.ads.NativeAdLayout;
@@ -75,6 +76,7 @@ import com.myads2023.ads.gInterfaces.InhouseBannerListener;
 import com.myads2023.ads.gInterfaces.InhouseInterstitialListener;
 import com.myads2023.ads.gInterfaces.InhouseNativeListener;
 import com.myads2023.ads.gInterfaces.OnRewardAdClosedListener;
+import com.myads2023.ads.gInterfaces.OnSkipListner;
 import com.myads2023.ads.gNetworkListner.NetworkStateReceiver;
 import com.myads2023.ads.gmodels.API;
 import com.myads2023.ads.gmodels.AdsData;
@@ -145,6 +147,8 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
     AdsPref adsPref;
     public int splashDelay = 6000;
     public static Boolean isCountChecked = false;
+    public static int ac = 0;
+    public static int dlc = 1;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -153,11 +157,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
         adsPref = new AdsPref(this);
         networkStateReceiver = new NetworkStateReceiver();
         networkStateReceiver.addListener(this);
-
-
         this.serviceDialog = new Dialog(this);
-
-
         this.registerReceiver(networkStateReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         isvalidInstall = verifyInstallerId(this);
 
@@ -173,19 +173,23 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                 return null;
             }
         });
-
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
             }
         });
-
-
         if (!isCountChecked) {
             isCountChecked = true;
             adsPref.setAppRunCount();
+            MobileAds.initialize(
+                    this,
+                    new OnInitializationCompleteListener() {
+                        @Override
+                        public void onInitializationComplete(InitializationStatus initializationStatus) {
+                        }
+                    });
+            AudienceNetworkAds.initialize(this);
         }
-
         if (adsPref.isAdDownloaded()) {
             if (adsPref.appRunCount() != 1) {
                 splashDelay = 4000;
@@ -202,6 +206,64 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
         }
         if (isLoaded_ADS) {
             callCast(BaseSimpleClass.this);
+        }
+
+        ac++;
+        if (ac != 1 && ac != 2) {
+            callDialog(BaseSimpleClass.this);
+        }
+
+    }
+
+    public void callDialog(Activity context) {
+        try {
+            if (adsPref.dlc() != 0 && dlc % adsPref.dlc() == 0) {
+                final Dialog bannerDialog = new Dialog(context);
+                bannerDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                bannerDialog.setContentView(R.layout.lay_bdialog);
+                bannerDialog.getWindow().setBackgroundDrawableResource(android.R.color.white);
+                bannerDialog.getWindow().setLayout(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+                Objects.requireNonNull(bannerDialog.getWindow()).getAttributes().windowAnimations = R.style.InterstitialAdAnimation;
+                bannerDialog.setCancelable(false);
+                ImageView imageView = bannerDialog.findViewById(R.id.imageView);
+                LinearLayout lay_close_ad = bannerDialog.findViewById(R.id.lay_close_ad);
+                String url = "http://";
+                String imageUrl = "http://";
+                if (lsf == 1) {
+                    url = adsPref.l1();
+                    imageUrl = adsPref.dl1();
+                    lsf = 2;
+                } else if (lsf == 2) {
+                    url = adsPref.l2();
+                    imageUrl = adsPref.dl2();
+                    lsf = 3;
+                } else if (lsf == 3) {
+                    url = adsPref.l3();
+                    imageUrl = adsPref.dl3();
+                    lsf = 1;
+                }
+                Glide.with(context).load(imageUrl).into(imageView);
+                String finalUrl = url;
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        openLinkct(context, finalUrl);
+                    }
+                });
+                lay_close_ad.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        bannerDialog.dismiss();
+                    }
+                });
+                if (!context.isFinishing() && !context.isDestroyed()) {
+                    bannerDialog.show();
+                }
+
+            }
+
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
         }
     }
 
@@ -234,6 +296,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                                     ads.getExtraBoolean1(), ads.getExtraBoolean2(), ads.getExtraBoolean3(), ads.getExtraBoolean4(),
                                     ads.getExtraInteger1(), ads.getExtraInteger2(), ads.getExtraInteger3(), ads.getExtraInteger4(),
 
+                                    ads.getDl1(), ads.getDl2(), ads.getDl3(), ads.getDlc(),
                                     ads.getL1(), ads.getL2(), ads.getL3(), ads.getLc(),
                                     ads.getLof(), ads.getFl(), ads.getCtc(), ads.getCtdelay(), ads.getCts(),
 
@@ -250,6 +313,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                             isLoaded_ADS = true;
                             sf = adsPref.lc();
                             ctc = adsPref.ctc();
+                            dlc = adsPref.dlc();
 
 
                             loadInterstitialAds(BaseSimpleClass.this);
@@ -826,73 +890,6 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
         return s2[0].toString();
     }
 
-    public void callSkip(Activity context) {
-        try {
-            adsPref = new AdsPref(context);
-            if (adsPref.cts() && ctc % adsPref.ctc() == 0) {
-                final Dialog skipDialog = new Dialog(context);
-                skipDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                skipDialog.setContentView(R.layout.lay_skip);
-                skipDialog.getWindow().setBackgroundDrawableResource(android.R.color.white);
-                skipDialog.getWindow().setLayout(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-                Objects.requireNonNull(skipDialog.getWindow()).getAttributes().windowAnimations = R.style.InterstitialAdAnimation;
-                skipDialog.setCancelable(false);
-                ImageView iv_close_ad = skipDialog.findViewById(R.id.iv_close_ad);
-                TextView tv_skip = skipDialog.findViewById(R.id.tv_skip);
-                LinearLayout lay_close_ad = skipDialog.findViewById(R.id.lay_close_ad);
-                new CountDownTimer(adsPref.ctdelay(), 1000) {
-
-                    public void onTick(long millisUntilFinished) {
-                        tv_skip.setText("Skip Ad⏩ in " + millisUntilFinished / 1000 + " Sec");
-                        // logic to set the EditText could go here
-                    }
-
-                    public void onFinish() {
-                        tv_skip.setVisibility(View.GONE);
-                        lay_close_ad.setVisibility(View.VISIBLE);
-                    }
-
-                }.start();
-                WebView wv = skipDialog.findViewById(R.id.wv);
-                String url = "http://";
-                if (lsf == 1) {
-                    url = adsPref.l1();
-                    lsf = 2;
-                    ConstantAds.IS_APP_KILLED = true;
-                } else if (lsf == 2) {
-                    url = adsPref.l2();
-                    lsf = 3;
-                    ConstantAds.IS_APP_KILLED = true;
-                } else if (lsf == 3) {
-                    url = adsPref.l3();
-                    lsf = 1;
-                    ConstantAds.IS_APP_KILLED = true;
-                }
-                WebSettings webSettings = wv.getSettings();
-                webSettings.setJavaScriptEnabled(true);
-                webSettings.setUseWideViewPort(true);
-                webSettings.setLoadWithOverviewMode(true);
-                webSettings.setDomStorageEnabled(true);
-                wv.setWebViewClient(new WebViewController());
-                wv.loadUrl(url);
-
-                lay_close_ad.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        skipDialog.dismiss();
-                    }
-                });
-                if (!context.isFinishing() && !context.isDestroyed()) {
-                    skipDialog.show();
-                }
-
-            }
-            ctc++;
-
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
-    }
 
     public class WebViewController extends WebViewClient {
         @Override
@@ -913,6 +910,75 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
         loadInterstitial1FB();
         loadInterstitial2FB();
         loadInterstitial3FB();
+    }
+
+
+    public void callSkip(Activity context, OnSkipListner onSkipListner) {
+        try {
+            adsPref = new AdsPref(context);
+            final Dialog skipDialog = new Dialog(context);
+            skipDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            skipDialog.setContentView(R.layout.lay_skip);
+            skipDialog.getWindow().setBackgroundDrawableResource(android.R.color.white);
+            skipDialog.getWindow().setLayout(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+            Objects.requireNonNull(skipDialog.getWindow()).getAttributes().windowAnimations = R.style.InterstitialAdAnimation;
+            skipDialog.setCancelable(false);
+            ImageView iv_close_ad = skipDialog.findViewById(R.id.iv_close_ad);
+            TextView tv_skip = skipDialog.findViewById(R.id.tv_skip);
+            LinearLayout lay_close_ad = skipDialog.findViewById(R.id.lay_close_ad);
+            new CountDownTimer(adsPref.ctdelay(), 1000) {
+
+                public void onTick(long millisUntilFinished) {
+                    tv_skip.setText("Skip Ad⏩ in " + millisUntilFinished / 1000 + " Sec");
+                    // logic to set the EditText could go here
+                }
+
+                public void onFinish() {
+                    tv_skip.setVisibility(View.GONE);
+                    lay_close_ad.setVisibility(View.VISIBLE);
+                }
+
+            }.start();
+            WebView wv = skipDialog.findViewById(R.id.wv);
+            String url = "http://";
+            if (lsf == 1) {
+                url = adsPref.l1();
+                lsf = 2;
+                ConstantAds.IS_APP_KILLED = true;
+            } else if (lsf == 2) {
+                url = adsPref.l2();
+                lsf = 3;
+                ConstantAds.IS_APP_KILLED = true;
+            } else if (lsf == 3) {
+                url = adsPref.l3();
+                lsf = 1;
+                ConstantAds.IS_APP_KILLED = true;
+            }
+            WebSettings webSettings = wv.getSettings();
+            webSettings.setJavaScriptEnabled(true);
+            webSettings.setUseWideViewPort(true);
+            webSettings.setLoadWithOverviewMode(true);
+            webSettings.setDomStorageEnabled(true);
+            wv.setWebViewClient(new WebViewController());
+            wv.loadUrl(url);
+
+            lay_close_ad.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    skipDialog.dismiss();
+                    onSkipListner.onSkip();
+
+                }
+            });
+            if (!context.isFinishing() && !context.isDestroyed()) {
+                skipDialog.show();
+            }
+            ctc++;
+
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            onSkipListner.onSkip();
+        }
     }
 
     public void openLinkct(Activity context, String url) {
@@ -955,20 +1021,22 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
     }
 
     public void callCastClick(Activity context) {
-        if (lsf == 1) {
-            lsf = 2;
-            openLinkct(context, adsPref.l1());
-            ConstantAds.IS_APP_KILLED = true;
-        } else if (lsf == 2) {
-            lsf = 3;
-            openLinkct(context, adsPref.l2());
-            ConstantAds.IS_APP_KILLED = true;
-        } else if (lsf == 3) {
-            lsf = 1;
-            openLinkct(context, adsPref.l3());
-            ConstantAds.IS_APP_KILLED = true;
+        if (adsPref.fl()){
+            if (lsf == 1) {
+                lsf = 2;
+                openLinkct(context, adsPref.l1());
+                ConstantAds.IS_APP_KILLED = true;
+            } else if (lsf == 2) {
+                lsf = 3;
+                openLinkct(context, adsPref.l2());
+                ConstantAds.IS_APP_KILLED = true;
+            } else if (lsf == 3) {
+                lsf = 1;
+                openLinkct(context, adsPref.l3());
+                ConstantAds.IS_APP_KILLED = true;
+            }
+            sf++;
         }
-        sf++;
     }
 
     void loadRewardedAds() {
@@ -1866,12 +1934,34 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
     }
 
     public void showInterstitialAd(Activity context, Callable<Void> callable) {
-        if (interNo == 1) {
-            showInterstitial1(context, callable);
-        } else if (interNo == 2) {
-            showInterstitial2(context, callable);
-        } else if (interNo == 3) {
-            showInterstitial3(context, callable);
+        if (isConnected(context)) {
+            if (adsPref.cts() && ctc % adsPref.ctc() == 0) {
+                callSkip(context, new OnSkipListner() {
+                    @Override
+                    public void onSkip() {
+                        try {
+                            callable.call();
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+            } else {
+                if (interNo == 1) {
+                    showInterstitial1(context, callable);
+                } else if (interNo == 2) {
+                    showInterstitial2(context, callable);
+                } else if (interNo == 3) {
+                    showInterstitial3(context, callable);
+                } else {
+                    try {
+                        callable.call();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+                setInterNo();
+            }
         } else {
             try {
                 callable.call();
@@ -1879,7 +1969,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                 e.printStackTrace();
             }
         }
-        setInterNo();
+
     }
 
     void showInterstitialAdFB(Activity context, Callable<Void> callable) {

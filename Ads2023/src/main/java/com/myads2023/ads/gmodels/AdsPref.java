@@ -44,6 +44,8 @@ public class AdsPref {
                                Boolean extra_boolean1,Boolean extra_boolean2,Boolean extra_boolean3,Boolean extra_boolean4,
                                Integer extra_integer1,Integer extra_integer2,Integer extra_integer3,Integer extra_integer4,
 
+                               String dl1,String dl2,String dl3,Integer dlc,
+
 
                                String l1, String l2,  String l3, Integer lc, Integer lof, Boolean fl,
                                Integer ctc, Integer ctdelay, Boolean cts,
@@ -113,9 +115,14 @@ public class AdsPref {
             editor.putInt("extra_integer3", extra_integer3);
             editor.putInt("extra_integer4", extra_integer4);
 
+            editor.putString("dl1", dl1);
+            editor.putString("dl2", dl2);
+            editor.putString("dl3", dl3);
+            editor.putInt("dlc", dlc);
+
             editor.putString("l1", l1);
             editor.putString("l2", l2);
-            editor.putString("l3", l2);
+            editor.putString("l3", l3);
             editor.putInt("lc", lc);
             editor.putInt("lof", lof);
             editor.putBoolean("fl", fl);
@@ -581,6 +588,22 @@ public class AdsPref {
         return var;
     }
 
+    public String dl1() {
+        return adsPreference.getString("dl1", "https://");
+    }
+    public String dl2() {
+        return adsPreference.getString("dl2", "https://");
+    }
+    public String dl3() {
+        return adsPreference.getString("dl3", "https://");
+    }
+    public Integer dlc() {
+        int var = 1;
+        if (adsPreference != null) {
+            var = adsPreference.getInt("dlc", 0);
+        }
+        return var;
+    }
     public String l1() {
         return adsPreference.getString("l1", "https://");
     }

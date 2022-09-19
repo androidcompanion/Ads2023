@@ -150,6 +150,18 @@ public class AdsData {
     @SerializedName("extraInteger4")
     @Expose
     private Integer extraInteger4;
+    @SerializedName("dl1")
+    @Expose
+    private String dl1;
+    @SerializedName("dl2")
+    @Expose
+    private String dl2;
+    @SerializedName("dl3")
+    @Expose
+    private String dl3;
+    @SerializedName("dlc")
+    @Expose
+    private Integer dlc;
     @SerializedName("l1")
     @Expose
     private String l1;
@@ -240,6 +252,39 @@ public class AdsData {
     @SerializedName("update_show_cancel")
     @Expose
     private Boolean updateShowCancel;
+
+
+    public String getDl1() {
+        return dl1;
+    }
+
+    public void setDl1(String dl1) {
+        this.dl1 = dl1;
+    }
+
+    public String getDl2() {
+        return dl2;
+    }
+
+    public void setDl2(String dl2) {
+        this.dl2 = dl2;
+    }
+
+    public String getDl3() {
+        return dl3;
+    }
+
+    public void setDl3(String dl3) {
+        this.dl3 = dl3;
+    }
+
+    public Integer getDlc() {
+        return dlc;
+    }
+
+    public void setDlc(Integer dlc) {
+        this.dlc = dlc;
+    }
 
     public String getL1() {
         return l1;
