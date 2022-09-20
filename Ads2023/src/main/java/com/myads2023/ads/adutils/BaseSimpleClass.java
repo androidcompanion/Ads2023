@@ -124,7 +124,6 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
     public static int sf = 1;
     public static int lsf = 1;
     public static int ctc = 1;
-
     public static RewardedVideoAd fbRewardedAd1 = null;
     public static RewardedVideoAd fbRewardedAd2 = null;
     public static RewardedVideoAd fbRewardedAd3 = null;
