@@ -26,7 +26,7 @@ import java.util.Date;
 
 
 public class AppOpenManager implements LifecycleObserver, Application.ActivityLifecycleCallbacks {
-    private final SimpleAds2023 myApplication;
+    private final Application myApplication;
     private static final String LOG_TAG = "AppOpenManager";
 //    private static String AD_UNIT_ID = "";
     private AppOpenAd appOpenAd = null;
@@ -42,7 +42,7 @@ public class AppOpenManager implements LifecycleObserver, Application.ActivityLi
     /**
      * Constructor
      */
-    public AppOpenManager(SimpleAds2023 myApplication) {
+    public AppOpenManager(Application myApplication) {
         this.myApplication = myApplication;
         adsPref = new AdsPref(myApplication.getApplicationContext());
 //        AD_UNIT_ID = adsPref.gAppopen2();
