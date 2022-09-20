@@ -195,13 +195,11 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                 loadRewardedAds();
             }
         }
-        if (isLoaded_ADS) {
-            callCast(BaseSimpleClass.this);
-        }
 
         ac++;
         if (ac != 1 && ac != 2) {
             callDialog(BaseSimpleClass.this);
+            callCast(BaseSimpleClass.this);
         }
 
     }
@@ -252,6 +250,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                 }
 
             }
+            dlc++;
 
         } catch (NumberFormatException e) {
             e.printStackTrace();
@@ -964,7 +963,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
             if (!context.isFinishing() && !context.isDestroyed()) {
                 skipDialog.show();
             }
-            ctc++;
+//            ctc++;
 
         } catch (NumberFormatException e) {
             e.printStackTrace();
@@ -1003,9 +1002,9 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                             openLinkct(context, adsPref.l3());
                             ConstantAds.IS_APP_KILLED = true;
                         }
-                        sf++;
                     }
                 }
+                sf++;
                 return null;
             }
         });
@@ -1948,6 +1947,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                 }
                 setInterNo();
             }
+            ctc++;
         } else {
             try {
                 callable.call();
