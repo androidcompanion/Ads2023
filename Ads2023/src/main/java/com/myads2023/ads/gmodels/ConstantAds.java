@@ -10,6 +10,7 @@ public class ConstantAds {
     public static ProgressDialog pDialogDelay = null;
     public static int adCountDefault = 3;
     public static int AD_DELAY = 1500;
+    public static int CT_COLOR = 0;
     public static boolean PRELOAD_REWARD = false;
     public static String AD_MESSAGE = "Showing Ad...";
     public static String adUrlId = "";
@@ -36,6 +37,10 @@ public class ConstantAds {
     public static void showProgress(Activity context){
         pDialogDelay = new ProgressDialog(context);
         pDialogDelay.show();
+    }
+
+    public static void setCtColor(int color){
+        CT_COLOR = color;
     }
     public static void showProgress(Activity context, String text){
         pDialogDelay = new ProgressDialog(context);

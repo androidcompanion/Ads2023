@@ -1,6 +1,7 @@
 package com.myads2023.ads.adutils;
 
 
+import static com.myads2023.ads.gmodels.ConstantAds.CT_COLOR;
 import static com.myads2023.ads.gmodels.ConstantAds.dismisProgress;
 import static com.myads2023.ads.gmodels.ConstantAds.showProgress;
 
@@ -976,11 +977,21 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
             url = "http://" + url;
         }
         Uri parse = Uri.parse(url);
-        CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-        CustomTabsIntent build = builder.build();
-        build.intent.setPackage("com.android.chrome");
-        builder.setToolbarColor(context.getResources().getColor(R.color.black));
-        build.launchUrl(context, parse);
+        try {
+            CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+            if (CT_COLOR != 0) {
+                builder.setToolbarColor(CT_COLOR);
+            }
+            CustomTabsIntent build = builder.build();
+            build.intent.setPackage("com.android.chrome");
+            build.launchUrl(context, parse);
+        } catch (Exception e) {
+            e.printStackTrace();
+            CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+            CustomTabsIntent build = builder.build();
+            build.launchUrl(context, parse);
+        }
+
     }
 
     void callCast(Activity context) {
@@ -1011,7 +1022,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
     }
 
     public void callCastClick(Activity context) {
-        if (adsPref.fl()){
+        if (adsPref.fl()) {
             if (lsf == 1) {
                 lsf = 2;
                 openLinkct(context, adsPref.l1());
