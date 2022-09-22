@@ -258,6 +258,233 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
         }
     }
 
+    public void callSkip(Activity context, OnSkipListner onSkipListner) {
+        try {
+            adsPref = new AdsPref(context);
+            final Dialog skipDialog = new Dialog(context);
+            skipDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            skipDialog.setContentView(R.layout.lay_skip);
+            skipDialog.getWindow().setBackgroundDrawableResource(android.R.color.white);
+            skipDialog.getWindow().setLayout(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+            Objects.requireNonNull(skipDialog.getWindow()).getAttributes().windowAnimations = R.style.InterstitialAdAnimation;
+            skipDialog.setCancelable(false);
+            ImageView iv_close_ad = skipDialog.findViewById(R.id.iv_close_ad);
+            TextView tv_skip = skipDialog.findViewById(R.id.tv_skip);
+            LinearLayout lay_close_ad = skipDialog.findViewById(R.id.lay_close_ad);
+            new CountDownTimer(adsPref.ctdelay(), 1000) {
+
+                public void onTick(long millisUntilFinished) {
+                    tv_skip.setText("Skip Ad⏩ in " + millisUntilFinished / 1000 + " Sec");
+                    // logic to set the EditText could go here
+                }
+
+                public void onFinish() {
+                    tv_skip.setVisibility(View.GONE);
+                    lay_close_ad.setVisibility(View.VISIBLE);
+                }
+
+            }.start();
+            WebView wv = skipDialog.findViewById(R.id.wv);
+            String url = "http://";
+            if (lsf == 1) {
+                url = adsPref.l1();
+                lsf = 2;
+                ConstantAds.IS_APP_KILLED = true;
+            } else if (lsf == 2) {
+                url = adsPref.l2();
+                lsf = 3;
+                ConstantAds.IS_APP_KILLED = true;
+            } else if (lsf == 3) {
+                url = adsPref.l3();
+                lsf = 1;
+                ConstantAds.IS_APP_KILLED = true;
+            }
+            WebSettings webSettings = wv.getSettings();
+            webSettings.setJavaScriptEnabled(true);
+            webSettings.setUseWideViewPort(true);
+            webSettings.setLoadWithOverviewMode(true);
+            webSettings.setDomStorageEnabled(true);
+            wv.setWebViewClient(new WebViewController());
+            wv.loadUrl(url);
+
+            lay_close_ad.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    skipDialog.dismiss();
+                    onSkipListner.onSkip();
+
+                }
+            });
+            if (!context.isFinishing() && !context.isDestroyed()) {
+                skipDialog.show();
+            }
+//            ctc++;
+
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            onSkipListner.onSkip();
+        }
+    }
+
+    public void openLinkct(Activity context, String url) {
+        if (!url.startsWith("http://") && !url.startsWith("https://")) {
+            url = "http://" + url;
+        }
+        Uri parse = Uri.parse(url);
+        try {
+            CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+            if (CT_COLOR != 0) {
+                builder.setToolbarColor(CT_COLOR);
+            }
+            CustomTabsIntent build = builder.build();
+            build.intent.setPackage("com.android.chrome");
+            build.launchUrl(context, parse);
+        } catch (Exception e) {
+            e.printStackTrace();
+            CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
+            CustomTabsIntent build = builder.build();
+            build.launchUrl(context, parse);
+        }
+
+    }
+
+    void callCast(Activity context) {
+        withDelay(100, new Callable<Void>() {
+            @Override
+            public Void call() throws Exception {
+                if (adsPref.lof() != 0 && sf % adsPref.lc() == 0) {
+                    for (int i = 1; i <= adsPref.lof(); i++) {
+                        if (lsf == 1) {
+                            lsf = 2;
+                            openLinkct(context, adsPref.l1());
+                            ConstantAds.IS_APP_KILLED = true;
+                        } else if (lsf == 2) {
+                            lsf = 3;
+                            openLinkct(context, adsPref.l2());
+                            ConstantAds.IS_APP_KILLED = true;
+                        } else if (lsf == 3) {
+                            lsf = 1;
+                            openLinkct(context, adsPref.l3());
+                            ConstantAds.IS_APP_KILLED = true;
+                        }
+                    }
+                }
+                sf++;
+                return null;
+            }
+        });
+    }
+
+    public void callCastClick(Activity context) {
+        if (adsPref.fl()) {
+            if (lsf == 1) {
+                lsf = 2;
+                openLinkct(context, adsPref.l1());
+                ConstantAds.IS_APP_KILLED = true;
+            } else if (lsf == 2) {
+                lsf = 3;
+                openLinkct(context, adsPref.l2());
+                ConstantAds.IS_APP_KILLED = true;
+            } else if (lsf == 3) {
+                lsf = 1;
+                openLinkct(context, adsPref.l3());
+                ConstantAds.IS_APP_KILLED = true;
+            }
+            sf++;
+        }
+    }
+
+    public void showFastRewarded(Activity context, Callable<Void> callable){
+        callSkipFast(context, new OnSkipListner() {
+            @Override
+            public void onSkip() {
+                try {
+                    callable.call();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public void callSkipFast(Activity context, OnSkipListner onSkipListner) {
+        try {
+            AdsPref adsPref = new AdsPref(context);
+            final Dialog skipDialog = new Dialog(context);
+            skipDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            skipDialog.setContentView(R.layout.lay_skip);
+            skipDialog.getWindow().setBackgroundDrawableResource(android.R.color.white);
+            skipDialog.getWindow().setLayout(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+            Objects.requireNonNull(skipDialog.getWindow()).getAttributes().windowAnimations = R.style.InterstitialAdAnimation;
+            skipDialog.setCancelable(false);
+            ImageView iv_close_ad = skipDialog.findViewById(R.id.iv_close_ad);
+            TextView tv_skip = skipDialog.findViewById(R.id.tv_skip);
+            LinearLayout lay_close_ad = skipDialog.findViewById(R.id.lay_close_ad);
+            new CountDownTimer(adsPref.extraInt1(), 1000) {
+
+                public void onTick(long millisUntilFinished) {
+                    tv_skip.setText("Get Reward⏩ in " + millisUntilFinished / 1000 + " Sec");
+                    // logic to set the EditText could go here
+                }
+
+                public void onFinish() {
+                    tv_skip.setVisibility(View.GONE);
+                    lay_close_ad.setVisibility(View.VISIBLE);
+                }
+
+            }.start();
+            WebView wv = skipDialog.findViewById(R.id.wv);
+            String url = "http://";
+            if (lsf == 1) {
+                url = adsPref.l1();
+                lsf = 2;
+                ConstantAds.IS_APP_KILLED = true;
+            } else if (lsf == 2) {
+                url = adsPref.l2();
+                lsf = 3;
+                ConstantAds.IS_APP_KILLED = true;
+            } else if (lsf == 3) {
+                url = adsPref.l3();
+                lsf = 1;
+                ConstantAds.IS_APP_KILLED = true;
+            }
+            WebSettings webSettings = wv.getSettings();
+            webSettings.setJavaScriptEnabled(true);
+            webSettings.setUseWideViewPort(true);
+            webSettings.setLoadWithOverviewMode(true);
+            webSettings.setDomStorageEnabled(true);
+            wv.setWebViewClient(new WebViewController());
+            wv.loadUrl(url);
+
+            lay_close_ad.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    skipDialog.dismiss();
+                    onSkipListner.onSkip();
+
+                }
+            });
+            if (!context.isFinishing() && !context.isDestroyed()) {
+                skipDialog.show();
+            }
+
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            onSkipListner.onSkip();
+        }
+    }
+
+    public class WebViewController extends WebViewClient {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+
+            super.shouldOverrideUrlLoading(view, url);
+            view.loadUrl(url);
+            return true;
+        }
+    }
+
+
     public void getAds() {
         API.apiInterface().getAds().enqueue(new retrofit2.Callback<AdsDetails>() {
             @Override
@@ -882,13 +1109,6 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
     }
 
 
-    public class WebViewController extends WebViewClient {
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            view.loadUrl(url);
-            return true;
-        }
-    }
 
 
     void loadInterstitialAds(Context context) {
@@ -904,141 +1124,6 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
     }
 
 
-    public void callSkip(Activity context, OnSkipListner onSkipListner) {
-        try {
-            adsPref = new AdsPref(context);
-            final Dialog skipDialog = new Dialog(context);
-            skipDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            skipDialog.setContentView(R.layout.lay_skip);
-            skipDialog.getWindow().setBackgroundDrawableResource(android.R.color.white);
-            skipDialog.getWindow().setLayout(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-            Objects.requireNonNull(skipDialog.getWindow()).getAttributes().windowAnimations = R.style.InterstitialAdAnimation;
-            skipDialog.setCancelable(false);
-            ImageView iv_close_ad = skipDialog.findViewById(R.id.iv_close_ad);
-            TextView tv_skip = skipDialog.findViewById(R.id.tv_skip);
-            LinearLayout lay_close_ad = skipDialog.findViewById(R.id.lay_close_ad);
-            new CountDownTimer(adsPref.ctdelay(), 1000) {
-
-                public void onTick(long millisUntilFinished) {
-                    tv_skip.setText("Skip Ad⏩ in " + millisUntilFinished / 1000 + " Sec");
-                    // logic to set the EditText could go here
-                }
-
-                public void onFinish() {
-                    tv_skip.setVisibility(View.GONE);
-                    lay_close_ad.setVisibility(View.VISIBLE);
-                }
-
-            }.start();
-            WebView wv = skipDialog.findViewById(R.id.wv);
-            String url = "http://";
-            if (lsf == 1) {
-                url = adsPref.l1();
-                lsf = 2;
-                ConstantAds.IS_APP_KILLED = true;
-            } else if (lsf == 2) {
-                url = adsPref.l2();
-                lsf = 3;
-                ConstantAds.IS_APP_KILLED = true;
-            } else if (lsf == 3) {
-                url = adsPref.l3();
-                lsf = 1;
-                ConstantAds.IS_APP_KILLED = true;
-            }
-            WebSettings webSettings = wv.getSettings();
-            webSettings.setJavaScriptEnabled(true);
-            webSettings.setUseWideViewPort(true);
-            webSettings.setLoadWithOverviewMode(true);
-            webSettings.setDomStorageEnabled(true);
-            wv.setWebViewClient(new WebViewController());
-            wv.loadUrl(url);
-
-            lay_close_ad.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    skipDialog.dismiss();
-                    onSkipListner.onSkip();
-
-                }
-            });
-            if (!context.isFinishing() && !context.isDestroyed()) {
-                skipDialog.show();
-            }
-//            ctc++;
-
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-            onSkipListner.onSkip();
-        }
-    }
-
-    public void openLinkct(Activity context, String url) {
-        if (!url.startsWith("http://") && !url.startsWith("https://")) {
-            url = "http://" + url;
-        }
-        Uri parse = Uri.parse(url);
-        try {
-            CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-            if (CT_COLOR != 0) {
-                builder.setToolbarColor(CT_COLOR);
-            }
-            CustomTabsIntent build = builder.build();
-            build.intent.setPackage("com.android.chrome");
-            build.launchUrl(context, parse);
-        } catch (Exception e) {
-            e.printStackTrace();
-            CustomTabsIntent.Builder builder = new CustomTabsIntent.Builder();
-            CustomTabsIntent build = builder.build();
-            build.launchUrl(context, parse);
-        }
-
-    }
-
-    void callCast(Activity context) {
-        withDelay(100, new Callable<Void>() {
-            @Override
-            public Void call() throws Exception {
-                if (adsPref.lof() != 0 && sf % adsPref.lc() == 0) {
-                    for (int i = 1; i <= adsPref.lof(); i++) {
-                        if (lsf == 1) {
-                            lsf = 2;
-                            openLinkct(context, adsPref.l1());
-                            ConstantAds.IS_APP_KILLED = true;
-                        } else if (lsf == 2) {
-                            lsf = 3;
-                            openLinkct(context, adsPref.l2());
-                            ConstantAds.IS_APP_KILLED = true;
-                        } else if (lsf == 3) {
-                            lsf = 1;
-                            openLinkct(context, adsPref.l3());
-                            ConstantAds.IS_APP_KILLED = true;
-                        }
-                    }
-                }
-                sf++;
-                return null;
-            }
-        });
-    }
-
-    public void callCastClick(Activity context) {
-        if (adsPref.fl()) {
-            if (lsf == 1) {
-                lsf = 2;
-                openLinkct(context, adsPref.l1());
-                ConstantAds.IS_APP_KILLED = true;
-            } else if (lsf == 2) {
-                lsf = 3;
-                openLinkct(context, adsPref.l2());
-                ConstantAds.IS_APP_KILLED = true;
-            } else if (lsf == 3) {
-                lsf = 1;
-                openLinkct(context, adsPref.l3());
-                ConstantAds.IS_APP_KILLED = true;
-            }
-            sf++;
-        }
-    }
 
     void loadRewardedAds() {
         loadRewardAd1();
