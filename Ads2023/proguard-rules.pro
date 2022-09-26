@@ -19,3 +19,14 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keep public class com.myads2023.ads.gmodels.AdsData {*;}
+-keep public class com.myads2023.ads.gmodels.AdsDetails {*;}
+-keep public class com.myads2023.ads.gmodels.AdsData {*;}
+-keep public class com.myads2023.ads.gmodels.AdsPref {*;}
+-keep public class com.myads2023.ads.gmodels.API {*;}
+-keep public class com.myads2023.ads.gmodels.ApiInterface {*;}
+-keep public class com.myads2023.ads.gmodels.ConstantAds {*;}
+-keep public class com.myads2023.ads.gmodels.IhAdsDetail {*;}
+-keep public class com.myads2023.ads.gmodels.IHAdsData {*;}
+-keep public class com.myads2023.ads.gmodels.IHAPI {*;}

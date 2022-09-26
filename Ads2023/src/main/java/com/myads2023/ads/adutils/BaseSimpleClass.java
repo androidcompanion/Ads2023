@@ -211,7 +211,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                 final Dialog bannerDialog = new Dialog(context);
                 bannerDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 bannerDialog.setContentView(R.layout.lay_bdialog);
-                bannerDialog.getWindow().setBackgroundDrawableResource(android.R.color.white);
+                bannerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                 bannerDialog.getWindow().setLayout(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
                 Objects.requireNonNull(bannerDialog.getWindow()).getAttributes().windowAnimations = R.style.InterstitialAdAnimation;
                 bannerDialog.setCancelable(false);

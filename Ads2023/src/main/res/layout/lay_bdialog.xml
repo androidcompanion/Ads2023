@@ -18,15 +18,14 @@
     <RelativeLayout
         android:paddingEnd="5dp"
         android:paddingStart="5dp"
-        android:paddingTop="1dp"
-        android:paddingBottom="1dp"
         android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
         android:id="@+id/lay_close"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <ImageView
+            android:layout_marginTop="10dp"
+            android:layout_centerVertical="true"
             android:id="@+id/iv_ads"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -34,19 +33,20 @@
             android:src="@drawable/ic_ads_white" />
 
         <LinearLayout
+            android:layout_marginTop="10dp"
+            android:layout_centerVertical="true"
             android:id="@+id/lay_close_ad"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
             android:background="@drawable/bg_close_ad"
             android:orientation="horizontal"
             android:visibility="visible">
 
             <ImageView
                 android:id="@+id/iv_close_ad"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:src="@drawable/ic_close_ad"
                 android:visibility="visible" />

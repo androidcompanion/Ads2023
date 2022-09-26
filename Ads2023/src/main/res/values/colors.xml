@@ -29,6 +29,6 @@
     <color name="gnt_outline">#E0E0E0</color>
 
     <color name="basic_gray_ad">#C8757171</color>
-    <color name="semi_gray_ad">#C84A4848</color>
+    <color name="semi_gray_ad">#A84A4848</color>
     <color name="dark_gray_ad">#C83E3C3C</color>
 </resources>
