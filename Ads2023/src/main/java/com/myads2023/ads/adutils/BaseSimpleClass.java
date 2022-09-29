@@ -274,7 +274,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
             new CountDownTimer(adsPref.ctdelay(), 1000) {
 
                 public void onTick(long millisUntilFinished) {
-                    tv_skip.setText("Skip Ad⏩ in " + millisUntilFinished / 1000 + " Sec");
+                    tv_skip.setText("Skip Ad in " + millisUntilFinished / 1000 + " Sec");
                     // logic to set the EditText could go here
                 }
 
@@ -799,7 +799,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                             public void onClick(View view) {
                                 // open link
                                 if (interAd.getOpenin().equals("playstore")) {
-                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(interAd.getApplink())));
+                                    openLinkct(context, interAd.getApplink());
                                 } else {
                                     Uri uri = Uri.parse(interAd.getApplink()); // missing 'http://' will cause crashed
                                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
@@ -947,7 +947,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                             public void onClick(View view) {
                                 // open link
                                 if (bannerAd.getOpenin().equals("playstore")) {
-                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(bannerAd.getApplink())));
+                                    openLinkct(BaseSimpleClass.this, bannerAd.getApplink());
                                 } else {
                                     Uri uri = Uri.parse(bannerAd.getApplink()); // missing 'http://' will cause crashed
                                     Intent intent = new Intent(Intent.ACTION_VIEW, uri);
@@ -1068,7 +1068,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                     public void onClick(View view) {
                         // open link
                         if (nativeAd.getOpenin().equals("playstore")) {
-                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(nativeAd.getApplink())));
+                            openLinkct(BaseSimpleClass.this, nativeAd.getApplink());
                         } else {
                             Uri uri = Uri.parse(nativeAd.getApplink()); // missing 'http://' will cause crashed
                             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
