@@ -40,8 +40,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="5dp"
                     android:layout_marginEnd="5dp"
-                    android:visibility="visible"
-                    android:src="@drawable/ic_ads_white" />
+                    android:visibility="visible" />
 
                 <TextView
                     android:layout_centerVertical="true"
@@ -264,7 +263,6 @@
                         android:layout_gravity="start"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="5dp"
-                        android:drawableStart="@drawable/ic_ads"
                         android:drawablePadding="5dp"
                         android:gravity="center"
                         android:text="New App New Features"
@@ -291,8 +289,7 @@
                             android:layout_height="80dp"
                             android:layout_alignParentStart="true"
                             android:layout_marginStart="8dp"
-                            android:layout_marginTop="8dp"
-                            android:src="@drawable/ic_ads" />
+                            android:layout_marginTop="8dp" />
 
                         <LinearLayout
                             android:layout_width="match_parent"

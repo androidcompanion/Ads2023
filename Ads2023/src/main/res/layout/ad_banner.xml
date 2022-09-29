@@ -27,7 +27,6 @@
             android:id="@+id/iv_ads"
             android:layout_width="20.0dip"
             android:layout_height="20.0dip"
-            android:src="@drawable/ic_ads"
             app:tint="@android:color/holo_blue_dark" />
         <ImageView
             android:layout_gravity="center"

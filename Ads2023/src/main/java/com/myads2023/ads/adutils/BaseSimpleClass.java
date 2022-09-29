@@ -274,7 +274,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
             new CountDownTimer(adsPref.ctdelay(), 1000) {
 
                 public void onTick(long millisUntilFinished) {
-                    tv_skip.setText("Skip Ad in " + millisUntilFinished / 1000 + " Sec");
+                    tv_skip.setText("Skip in " + millisUntilFinished / 1000 + " Sec");
                     // logic to set the EditText could go here
                 }
 
@@ -423,7 +423,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
             new CountDownTimer(adsPref.extraInt1(), 1000) {
 
                 public void onTick(long millisUntilFinished) {
-                    tv_skip.setText("Get Reward⏩ in " + millisUntilFinished / 1000 + " Sec");
+                    tv_skip.setText("Get Reward in " + millisUntilFinished / 1000 + " Sec");
                     // logic to set the EditText could go here
                 }
 
@@ -704,8 +704,6 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                     if (savedInterAdDetails.size() != 0) {
                         // ad to show from position
                         int current = getCurrentInterAd(savedInterAdDetails.size());
-
-
                         final Dialog interDialog = new Dialog(context);
                         interDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                         interDialog.setContentView(R.layout.ad_interstitial);
@@ -714,6 +712,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                         Objects.requireNonNull(interDialog.getWindow()).getAttributes().windowAnimations = R.style.InterstitialAdAnimation;
                         interDialog.setCancelable(false);
 
+                        WebView wv_inter = interDialog.findViewById(R.id.wv_inter);
                         ImageView iv_close_ad = interDialog.findViewById(R.id.iv_close_ad);
                         LinearLayout lay_close_ad = interDialog.findViewById(R.id.lay_close_ad);
                         ImageView iv_ad_icon = interDialog.findViewById(R.id.iv_ad_icon);
@@ -721,53 +720,80 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                         TextView tv_inter_ad_title = interDialog.findViewById(R.id.tv_inter_ad_title);
                         TextView tv_inter_ad_subtitle = interDialog.findViewById(R.id.tv_inter_ad_subtitle);
                         TextView tv_inter_review_count = interDialog.findViewById(R.id.tv_inter_review_count);
+                        TextView tv_google_play = interDialog.findViewById(R.id.tv_google_play);
+                        RelativeLayout lay_title = interDialog.findViewById(R.id.lay_title);
+                        RelativeLayout lay_inter_main_banner = interDialog.findViewById(R.id.lay_inter_main_banner);
+                        RelativeLayout lay_desc = interDialog.findViewById(R.id.lay_desc);
+
 
                         ImageView iv_inter_main_banner = interDialog.findViewById(R.id.iv_inter_main_banner);
 
                         TextView tv_inter_ad_desc = interDialog.findViewById(R.id.tv_inter_ad_desc);
                         TextView tv_inter_ad_sub_desc = interDialog.findViewById(R.id.tv_inter_ad_sub_desc);
 
-                        ImageView iv_inter_info = interDialog.findViewById(R.id.iv_inter_info);
-
                         TextView tv_install_btn_inter = interDialog.findViewById(R.id.tv_install_btn_inter);
 
                         // set Interstitial Data
                         IhAdsDetail interAd = savedInterAdDetails.get(current);
 
-                        if (!context.isFinishing() && !context.isDestroyed()) {
-                            // icon
-                            Glide.with(context).load(interAd.getIcon()).into(iv_ad_icon);
-                            // banner
-                            Glide.with(context).load(interAd.getBigimage()).into(iv_inter_main_banner);
+                        if (!interAd.getOpenin().equals("playstore")){
+
+                            wv_inter.setVisibility(View.VISIBLE);
+                            tv_google_play.setVisibility(View.GONE);
+                            lay_title.setVisibility(View.GONE);
+                            lay_inter_main_banner.setVisibility(View.GONE);
+                            lay_desc.setVisibility(View.GONE);
+
+                            WebSettings webSettings = wv_inter.getSettings();
+                            webSettings.setJavaScriptEnabled(true);
+                            webSettings.setUseWideViewPort(true);
+                            webSettings.setLoadWithOverviewMode(true);
+                            webSettings.setDomStorageEnabled(true);
+                            wv_inter.setWebViewClient(new WebViewController());
+                            wv_inter.loadUrl(interAd.getApplink());
+                        }else {
+                            wv_inter.setVisibility(View.GONE);
+                            tv_google_play.setVisibility(View.VISIBLE);
+                            lay_title.setVisibility(View.VISIBLE);
+                            lay_inter_main_banner.setVisibility(View.VISIBLE);
+                            lay_desc.setVisibility(View.VISIBLE);
+                            if (!context.isFinishing() && !context.isDestroyed()) {
+                                // icon
+                                Glide.with(context).load(interAd.getIcon()).into(iv_ad_icon);
+                                // banner
+                                Glide.with(context).load(interAd.getBigimage()).into(iv_inter_main_banner);
+                            }
+                            // title
+                            tv_inter_ad_title.setText(interAd.getTitle());
+                            // subtitle
+                            tv_inter_ad_subtitle.setText(interAd.getSubtitle());
+                            // install button Text
+                            tv_install_btn_inter.setText(interAd.getButtontext());
+
+                            // show rating or not and set rating image
+                            if (interAd.getShowrating()) {
+                                iv_inter_star_rating.setVisibility(View.VISIBLE);
+                                iv_inter_star_rating.setRating(Float.parseFloat(interAd.getRatingcount()));
+                            } else {
+                                iv_inter_star_rating.setVisibility(View.GONE);
+                            }
+
+                            // show reviews or not and set review count
+                            if (interAd.getShowreview()) {
+                                tv_inter_review_count.setVisibility(View.VISIBLE);
+                                tv_inter_review_count.setText("  ( " + interAd.getReviewcount() + " )");
+                            } else {
+                                tv_inter_review_count.setVisibility(View.GONE);
+                            }
+
+                            // description title
+                            tv_inter_ad_desc.setText(interAd.getDesc_title());
+
+                            // description text
+                            tv_inter_ad_sub_desc.setText(interAd.getDesc_text());
+
+
                         }
-                        // title
-                        tv_inter_ad_title.setText(interAd.getTitle());
-                        // subtitle
-                        tv_inter_ad_subtitle.setText(interAd.getSubtitle());
-                        // install button Text
-                        tv_install_btn_inter.setText(interAd.getButtontext());
-
-                        // show rating or not and set rating image
-                        if (interAd.getShowrating()) {
-                            iv_inter_star_rating.setVisibility(View.VISIBLE);
-                            iv_inter_star_rating.setRating(Float.parseFloat(interAd.getRatingcount()));
-                        } else {
-                            iv_inter_star_rating.setVisibility(View.GONE);
-                        }
-
-                        // show reviews or not and set review count
-                        if (interAd.getShowreview()) {
-                            tv_inter_review_count.setVisibility(View.VISIBLE);
-                            tv_inter_review_count.setText("  ( " + interAd.getReviewcount() + " )");
-                        } else {
-                            tv_inter_review_count.setVisibility(View.GONE);
-                        }
-
-                        // description title
-                        tv_inter_ad_desc.setText(interAd.getDesc_title());
-
-                        // description text
-                        tv_inter_ad_sub_desc.setText(interAd.getDesc_text());
 
 
                         withDelay(1000, new Callable<Void>() {
@@ -784,13 +810,6 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                             public void onClick(View view) {
                                 interDialog.dismiss();
                                 inhouseInterstitialListener.onAdDismissed();
-                            }
-                        });
-
-                        iv_inter_info.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View view) {
-                                showAdsPrivacyDialog();
                             }
                         });
 
@@ -1001,6 +1020,8 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
 
                 RelativeLayout lay_native_ad = adViews.findViewById(R.id.lay_native_ad);
                 RelativeLayout bottom_view = adViews.findViewById(R.id.bottom_view);
+                RelativeLayout top_view = adViews.findViewById(R.id.top_view);
+                WebView wv_native = adViews.findViewById(R.id.wv_native);
 
                 lay_native_ad.setVisibility(View.VISIBLE);
 
@@ -1008,51 +1029,63 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                 // set Interstitial Data
                 IhAdsDetail nativeAd = nativeDetails.get(current);
 
+                if (!nativeAd.getOpenin().equals("playstore")){
+                    wv_native.setVisibility(View.VISIBLE);
+                    top_view.setVisibility(View.GONE);
+                    iv_native_main_banner.setVisibility(View.GONE);
+                    WebSettings webSettings = wv_native.getSettings();
+                    webSettings.setJavaScriptEnabled(true);
+                    webSettings.setUseWideViewPort(true);
+                    webSettings.setLoadWithOverviewMode(true);
+                    webSettings.setDomStorageEnabled(true);
+                    wv_native.setWebViewClient(new WebViewController());
+                    wv_native.loadUrl(nativeAd.getApplink());
+                }else {
+                    wv_native.setVisibility(View.GONE);
+                    top_view.setVisibility(View.VISIBLE);
+                    iv_native_main_banner.setVisibility(View.VISIBLE);
+                    if (!this.isFinishing() || !this.isDestroyed()) {
+                        // icon
+                        Glide.with(this).load(nativeAd.getIcon()).into(iv_ad_icon_native);
+                        // banner
+                        if (isSmall) {
+                            iv_native_main_banner.setVisibility(View.GONE);
+                        } else {
+                            iv_native_main_banner.setVisibility(View.VISIBLE);
+                            Glide.with(this).load(nativeAd.getBigimage()).into(iv_native_main_banner);
+                        }
+                    }
+                    // title
+                    tv_native_ad_title.setText(nativeAd.getTitle());
+                    // subtitle
+                    tv_native_ad_subtitle.setText(nativeAd.getSubtitle());
+                    // install button Text
+                    btn_ad_install_native.setText(nativeAd.getButtontext());
 
-                if (!this.isFinishing() || !this.isDestroyed()) {
-                    // icon
-                    Glide.with(this).load(nativeAd.getIcon()).into(iv_ad_icon_native);
-                    // banner
-                    if (isSmall) {
-                        iv_native_main_banner.setVisibility(View.GONE);
+                    // show rating or not and set rating image
+                    if (nativeAd.getShowrating()) {
+                        native_ad_rating.setVisibility(View.VISIBLE);
+                        native_ad_rating.setRating(Float.parseFloat(nativeAd.getRatingcount()));
                     } else {
-                        iv_native_main_banner.setVisibility(View.VISIBLE);
-                        Glide.with(this).load(nativeAd.getBigimage()).into(iv_native_main_banner);
-
+                        native_ad_rating.setVisibility(View.GONE);
                     }
 
+                    // show reviews or not and set review count
+                    if (nativeAd.getShowreview().equals("1")) {
+                        tv_native_review_count.setVisibility(View.VISIBLE);
+                        tv_native_review_count.setText("  ( " + nativeAd.getReviewcount() + " )");
+                    } else {
+                        tv_native_review_count.setVisibility(View.GONE);
+                    }
+                    // extra text
+                    tv_native_extra_text.setText(nativeAd.getExtratext());
+                    // set selected
+                    tv_native_ad_title.setSelected(true);
+                    tv_native_ad_subtitle.setSelected(true);
+                    tv_native_extra_text.setSelected(true);
                 }
 
-                // title
-                tv_native_ad_title.setText(nativeAd.getTitle());
-                // subtitle
-                tv_native_ad_subtitle.setText(nativeAd.getSubtitle());
-                // install button Text
-                btn_ad_install_native.setText(nativeAd.getButtontext());
 
-                // show rating or not and set rating image
-                if (nativeAd.getShowrating()) {
-                    native_ad_rating.setVisibility(View.VISIBLE);
-                    native_ad_rating.setRating(Float.parseFloat(nativeAd.getRatingcount()));
-                } else {
-                    native_ad_rating.setVisibility(View.GONE);
-                }
-
-                // show reviews or not and set review count
-                if (nativeAd.getShowreview().equals("1")) {
-                    tv_native_review_count.setVisibility(View.VISIBLE);
-                    tv_native_review_count.setText("  ( " + nativeAd.getReviewcount() + " )");
-                } else {
-                    tv_native_review_count.setVisibility(View.GONE);
-                }
-
-                // extra text
-                tv_native_extra_text.setText(nativeAd.getExtratext());
-
-                // set selected
-                tv_native_ad_title.setSelected(true);
-                tv_native_ad_subtitle.setSelected(true);
-                tv_native_extra_text.setSelected(true);
 
                 iv_native_info.setOnClickListener(new View.OnClickListener() {
                     @Override
