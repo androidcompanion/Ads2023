@@ -799,11 +799,10 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                             public void onClick(View view) {
                                 // open link
                                 if (interAd.getOpenin().equals("playstore")) {
-                                    openLinkct(context, interAd.getApplink());
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(interAd.getApplink())));
                                 } else {
-                                    Uri uri = Uri.parse(interAd.getApplink()); // missing 'http://' will cause crashed
-                                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                                    startActivity(intent);
+                                    openLinkct(context, interAd.getApplink());
+
                                 }
                             }
                         });
@@ -947,11 +946,10 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                             public void onClick(View view) {
                                 // open link
                                 if (bannerAd.getOpenin().equals("playstore")) {
-                                    openLinkct(BaseSimpleClass.this, bannerAd.getApplink());
+                                    startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(bannerAd.getApplink())));
                                 } else {
-                                    Uri uri = Uri.parse(bannerAd.getApplink()); // missing 'http://' will cause crashed
-                                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                                    startActivity(intent);
+                                    openLinkct(BaseSimpleClass.this, bannerAd.getApplink());
+
                                 }
                             }
                         });
@@ -1068,11 +1066,9 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                     public void onClick(View view) {
                         // open link
                         if (nativeAd.getOpenin().equals("playstore")) {
-                            openLinkct(BaseSimpleClass.this, nativeAd.getApplink());
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(nativeAd.getApplink())));
                         } else {
-                            Uri uri = Uri.parse(nativeAd.getApplink()); // missing 'http://' will cause crashed
-                            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                            startActivity(intent);
+                            openLinkct(BaseSimpleClass.this, nativeAd.getApplink());
                         }
                     }
                 });
