@@ -4,14 +4,31 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/AndroidStudioProjects/LibraryProjects/Ads2023/Ads2023/src/main/res/drawable/bg_btn_moreapps.xml" value="0.163" />
+        <entry key="..\:/AndroidStudioProjects/LibraryProjects/Ads2023/Ads2023/src/main/res/drawable/bg_close_ad.xml" value="0.2715" />
+        <entry key="..\:/AndroidStudioProjects/LibraryProjects/Ads2023/Ads2023/src/main/res/drawable/gnt_button_bg.xml" value="0.2725" />
+        <entry key="..\:/AndroidStudioProjects/LibraryProjects/Ads2023/Ads2023/src/main/res/drawable/gnt_outline_shape.xml" value="0.2725" />
+        <entry key="..\:/AndroidStudioProjects/LibraryProjects/Ads2023/Ads2023/src/main/res/drawable/gnt_rounded_corners_shape.xml" value="0.2725" />
+        <entry key="..\:/AndroidStudioProjects/LibraryProjects/Ads2023/Ads2023/src/main/res/drawable/ic_ads.xml" value="0.2725" />
+        <entry key="..\:/AndroidStudioProjects/LibraryProjects/Ads2023/Ads2023/src/main/res/drawable/ic_ads_white.xml" value="0.196" />
+        <entry key="..\:/AndroidStudioProjects/LibraryProjects/Ads2023/Ads2023/src/main/res/drawable/ic_close_ad.xml" value="0.196" />
+        <entry key="..\:/AndroidStudioProjects/LibraryProjects/Ads2023/Ads2023/src/main/res/drawable/ic_close_black_ad.xml" value="0.196" />
+        <entry key="..\:/AndroidStudioProjects/LibraryProjects/Ads2023/Ads2023/src/main/res/drawable/ic_google_play.xml" value="0.196" />
+        <entry key="..\:/AndroidStudioProjects/LibraryProjects/Ads2023/Ads2023/src/main/res/drawable/ic_info_ad.xml" value="0.196" />
         <entry key="..\:/AndroidStudioProjects/LibraryProjects/Ads2023/Ads2023/src/main/res/drawable/sdfsz.xml" value="0.163" />
-        <entry key="..\:/AndroidStudioProjects/LibraryProjects/Ads2023/Ads2023/src/main/res/layout/ad_banner.xml" value="0.36666666666666664" />
+        <entry key="..\:/AndroidStudioProjects/LibraryProjects/Ads2023/Ads2023/src/main/res/layout/ad_banner.xml" value="0.25" />
         <entry key="..\:/AndroidStudioProjects/LibraryProjects/Ads2023/Ads2023/src/main/res/layout/ad_interstitial.xml" value="0.36666666666666664" />
+        <entry key="..\:/AndroidStudioProjects/LibraryProjects/Ads2023/Ads2023/src/main/res/layout/ad_native.xml" value="0.33" />
+        <entry key="..\:/AndroidStudioProjects/LibraryProjects/Ads2023/Ads2023/src/main/res/layout/dialog_service.xml" value="0.18802083333333333" />
         <entry key="..\:/AndroidStudioProjects/LibraryProjects/Ads2023/Ads2023/src/main/res/layout/lay_bdialog.xml" value="0.36666666666666664" />
         <entry key="..\:/AndroidStudioProjects/LibraryProjects/Ads2023/Ads2023/src/main/res/layout/lay_skip.xml" value="0.36666666666666664" />
         <entry key="..\:/AndroidStudioProjects/LibraryProjects/Ads2023/Ads2023/src/main/res/layout/native_ad_layout.xml" value="0.18802083333333333" />
         <entry key="..\:/AndroidStudioProjects/LibraryProjects/Ads2023/Ads2023/src/main/res/layout/native_banner_ad_layout_fb.xml" value="0.36666666666666664" />
+        <entry key="..\:/AndroidStudioProjects/LibraryProjects/Ads2023/app/src/main/res/drawable/sample_bg.xml" value="0.1965" />
         <entry key="..\:/AndroidStudioProjects/LibraryProjects/Ads2023/app/src/main/res/layout/activity_main.xml" value="0.18958333333333333" />
+        <entry key="..\:/AndroidStudioProjects/LibraryProjects/Ads2023/app/src/main/res/layout/activity_splash.xml" value="0.36666666666666664" />
+        <entry key="..\:/AndroidStudioProjects/LibraryProjects/Ads2023_Offline/Ads2023/src/main/res/layout/ad_banner.xml" value="0.36666666666666664" />
+        <entry key="..\:/AndroidStudioProjects/LibraryProjects/Ads2023_Offline/Ads2023/src/main/res/layout/ad_interstitial.xml" value="0.36666666666666664" />
+        <entry key="..\:/AndroidStudioProjects/LibraryProjects/Ads2023_Offline/Ads2023/src/main/res/layout/ad_native.xml" value="0.36666666666666664" />
       </map>
     </option>
   </component>

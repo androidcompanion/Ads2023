@@ -17,6 +17,18 @@
         android:layout_height="match_parent"/>
 
 
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/iv_ads_web"
+        android:layout_width="20.0dip"
+        android:layout_height="20.0dip"
+        android:layout_gravity="center"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/ic_ads"
+        app:tint="@android:color/holo_blue_dark" />
+
+
     <RelativeLayout
         android:paddingBottom="1dp"
         android:paddingEnd="3dp"
@@ -90,6 +102,7 @@
                 android:layout_height="20.0dip"
                 android:layout_gravity="center"
                 android:layout_weight="1"
+                android:src="@drawable/ic_ads"
                 app:tint="@android:color/holo_blue_dark" />
 
             <ImageView
@@ -107,8 +120,8 @@
         android:id="@+id/iv_native_main_banner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@id/bottom_view"
         android:layout_below="@id/top_view"
+        android:layout_above="@id/bottom_view"
         android:adjustViewBounds="true"
         android:gravity="center" />
 
@@ -181,7 +194,6 @@
         </RelativeLayout>
 
         <TextView
-            android:textAllCaps="false"
             android:id="@+id/btn_ad_install_native"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

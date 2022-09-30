@@ -275,7 +275,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
             new CountDownTimer(adsPref.ctdelay(), 1000) {
 
                 public void onTick(long millisUntilFinished) {
-                    tv_skip.setText("Skip in " + millisUntilFinished / 1000 + " Sec");
+                    tv_skip.setText("Skip Ad in " + millisUntilFinished / 1000 + " Sec");
                     // logic to set the EditText could go here
                 }
 
@@ -424,7 +424,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
             new CountDownTimer(adsPref.extraInt1(), 1000) {
 
                 public void onTick(long millisUntilFinished) {
-                    tv_skip.setText("Get Reward in " + millisUntilFinished / 1000 + " Sec");
+                    tv_skip.setText("Get Reward⏩ in " + millisUntilFinished / 1000 + " Sec");
                     // logic to set the EditText could go here
                 }
 
@@ -705,6 +705,8 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                     if (savedInterAdDetails.size() != 0) {
                         // ad to show from position
                         int current = getCurrentInterAd(savedInterAdDetails.size());
+
+
                         final Dialog interDialog = new Dialog(context);
                         interDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                         interDialog.setContentView(R.layout.ad_interstitial);
@@ -713,7 +715,6 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                         Objects.requireNonNull(interDialog.getWindow()).getAttributes().windowAnimations = R.style.InterstitialAdAnimation;
                         interDialog.setCancelable(false);
 
-                        WebView wv_inter = interDialog.findViewById(R.id.wv_inter);
                         ImageView iv_close_ad = interDialog.findViewById(R.id.iv_close_ad);
                         LinearLayout lay_close_ad = interDialog.findViewById(R.id.lay_close_ad);
                         ImageView iv_ad_icon = interDialog.findViewById(R.id.iv_ad_icon);
@@ -721,10 +722,11 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                         TextView tv_inter_ad_title = interDialog.findViewById(R.id.tv_inter_ad_title);
                         TextView tv_inter_ad_subtitle = interDialog.findViewById(R.id.tv_inter_ad_subtitle);
                         TextView tv_inter_review_count = interDialog.findViewById(R.id.tv_inter_review_count);
-                        TextView tv_google_play = interDialog.findViewById(R.id.tv_google_play);
+                        WebView wv_inter = interDialog.findViewById(R.id.wv_inter);
                         RelativeLayout lay_title = interDialog.findViewById(R.id.lay_title);
                         RelativeLayout lay_inter_main_banner = interDialog.findViewById(R.id.lay_inter_main_banner);
                         RelativeLayout lay_desc = interDialog.findViewById(R.id.lay_desc);
+                        TextView tv_google_play = interDialog.findViewById(R.id.tv_google_play);
 
 
                         ImageView iv_inter_main_banner = interDialog.findViewById(R.id.iv_inter_main_banner);
@@ -732,16 +734,15 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                         TextView tv_inter_ad_desc = interDialog.findViewById(R.id.tv_inter_ad_desc);
                         TextView tv_inter_ad_sub_desc = interDialog.findViewById(R.id.tv_inter_ad_sub_desc);
 
+                        ImageView iv_inter_info = interDialog.findViewById(R.id.iv_inter_info);
+
                         TextView tv_install_btn_inter = interDialog.findViewById(R.id.tv_install_btn_inter);
 
                         // set Interstitial Data
                         IhAdsDetail interAd = savedInterAdDetails.get(current);
-
                         if (ad_bg_drawable != 0) {
                             tv_install_btn_inter.setBackgroundResource(ad_bg_drawable);
                         }
-
-
                         if (!interAd.getOpenin().equals("playstore") && interAd.getShowdouble()){
 
                             tv_install_btn_inter.setText(interAd.getButtontext());
@@ -759,11 +760,6 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                             wv_inter.setWebViewClient(new WebViewController());
                             wv_inter.loadUrl(interAd.getApplink());
                         }else {
-                            wv_inter.setVisibility(View.GONE);
-                            tv_google_play.setVisibility(View.VISIBLE);
-                            lay_title.setVisibility(View.VISIBLE);
-                            lay_inter_main_banner.setVisibility(View.VISIBLE);
-                            lay_desc.setVisibility(View.VISIBLE);
                             if (!context.isFinishing() && !context.isDestroyed()) {
                                 // icon
                                 Glide.with(context).load(interAd.getIcon()).into(iv_ad_icon);
@@ -799,9 +795,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                             // description text
                             tv_inter_ad_sub_desc.setText(interAd.getDesc_text());
 
-
                         }
-
 
                         withDelay(1000, new Callable<Void>() {
                             @Override
@@ -817,6 +811,13 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                             public void onClick(View view) {
                                 interDialog.dismiss();
                                 inhouseInterstitialListener.onAdDismissed();
+                            }
+                        });
+
+                        iv_inter_info.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                showAdsPrivacyDialog();
                             }
                         });
 
@@ -910,9 +911,6 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                         tv_banner_ad_subtitle.setText(bannerAd.getSubtitle());
                         // install button Text
                         tv_install_btn_banner.setText(bannerAd.getButtontext());
-                        if(ad_bg_drawable != 0 ){
-                            tv_install_btn_banner.setBackgroundResource(ad_bg_drawable);
-                        }
 
                         // show rating or not and set rating image
                         if (bannerAd.getShowrating()) {
@@ -934,28 +932,28 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                         tv_banner_extra_text.setText(bannerAd.getExtratext());
 
                         // check if double layout
-//                        if (bannerAd.getShowdouble()) {
-//                            Handler handler = new Handler();
-//                            Runnable run = new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    if (lay_first.getVisibility() == View.VISIBLE) {
-//                                        lay_first.setVisibility(View.GONE);
-//                                        lay_second.setVisibility(View.VISIBLE);
-//                                    } else {
-//                                        lay_first.setVisibility(View.VISIBLE);
-//                                        lay_second.setVisibility(View.GONE);
-//                                    }
-//                                    handler.postDelayed(this, 3000);
-//                                }
-//                            };
-//
-//                            handler.post(run);
-//
-//                        } else {
+                        if (bannerAd.getShowdouble()) {
+                            Handler handler = new Handler();
+                            Runnable run = new Runnable() {
+                                @Override
+                                public void run() {
+                                    if (lay_first.getVisibility() == View.VISIBLE) {
+                                        lay_first.setVisibility(View.GONE);
+                                        lay_second.setVisibility(View.VISIBLE);
+                                    } else {
+                                        lay_first.setVisibility(View.VISIBLE);
+                                        lay_second.setVisibility(View.GONE);
+                                    }
+                                    handler.postDelayed(this, 3000);
+                                }
+                            };
+
+                            handler.post(run);
+
+                        } else {
                             lay_first.setVisibility(View.VISIBLE);
                             lay_second.setVisibility(View.GONE);
-//                        }
+                        }
 
                         // set selected
                         tv_banner_ad_title.setSelected(true);
@@ -1018,6 +1016,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                 ImageView iv_native_info = adViews.findViewById(R.id.iv_native_info);
                 ImageView iv_ad_icon_native = adViews.findViewById(R.id.iv_ad_icon_native);
                 ImageView iv_native_main_banner = adViews.findViewById(R.id.iv_native_main_banner);
+                ImageView iv_ads_web = adViews.findViewById(R.id.iv_ads_web);
 
                 TextView tv_native_ad_title = adViews.findViewById(R.id.tv_native_ad_title);
                 TextView tv_native_ad_subtitle = adViews.findViewById(R.id.tv_native_ad_subtitle);
@@ -1043,6 +1042,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                 }
                 if (!nativeAd.getOpenin().equals("playstore") && nativeAd.getShowdouble()){
                     btn_ad_install_native.setText(nativeAd.getButtontext());
+                    iv_ads_web.setVisibility(View.VISIBLE);
                     wv_native.setVisibility(View.VISIBLE);
                     top_view.setVisibility(View.GONE);
                     iv_native_main_banner.setVisibility(View.GONE);
@@ -1054,9 +1054,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                     wv_native.setWebViewClient(new WebViewController());
                     wv_native.loadUrl(nativeAd.getApplink());
                 }else {
-                    wv_native.setVisibility(View.GONE);
-                    top_view.setVisibility(View.VISIBLE);
-                    iv_native_main_banner.setVisibility(View.VISIBLE);
+                    iv_ads_web.setVisibility(View.GONE);
                     if (!this.isFinishing() || !this.isDestroyed()) {
                         // icon
                         Glide.with(this).load(nativeAd.getIcon()).into(iv_ad_icon_native);
@@ -1066,8 +1064,11 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                         } else {
                             iv_native_main_banner.setVisibility(View.VISIBLE);
                             Glide.with(this).load(nativeAd.getBigimage()).into(iv_native_main_banner);
+
                         }
+
                     }
+
                     // title
                     tv_native_ad_title.setText(nativeAd.getTitle());
                     // subtitle
@@ -1090,18 +1091,15 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                     } else {
                         tv_native_review_count.setVisibility(View.GONE);
                     }
+
                     // extra text
                     tv_native_extra_text.setText(nativeAd.getExtratext());
+
                     // set selected
                     tv_native_ad_title.setSelected(true);
                     tv_native_ad_subtitle.setSelected(true);
                     tv_native_extra_text.setSelected(true);
-
-
-
                 }
-
-
                 iv_native_info.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -2531,7 +2529,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
             adContainer.removeAllViews();
             adContainer.addView(mAdView);
             AdRequest adRequest = new AdRequest.Builder().build();
-            com.google.android.gms.ads.AdSize adSize = getAdSize();
+            AdSize adSize = getAdSize();
             mAdView.setAdSize(adSize);
             mAdView.loadAd(adRequest);
             mAdView.setAdListener(new AdListener() {
@@ -2565,7 +2563,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
             adContainer.removeAllViews();
             adContainer.addView(mAdView);
             AdRequest adRequest = new AdRequest.Builder().build();
-            com.google.android.gms.ads.AdSize adSize = getAdSize();
+            AdSize adSize = getAdSize();
             mAdView.setAdSize(adSize);
             mAdView.loadAd(adRequest);
             mAdView.setAdListener(new AdListener() {
@@ -2600,7 +2598,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
             adContainer.removeAllViews();
             adContainer.addView(mAdView);
             AdRequest adRequest = new AdRequest.Builder().build();
-            com.google.android.gms.ads.AdSize adSize = getAdSize();
+            AdSize adSize = getAdSize();
             mAdView.setAdSize(adSize);
             mAdView.loadAd(adRequest);
             mAdView.setAdListener(new AdListener() {
@@ -2789,7 +2787,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
             adContainer.removeAllViews();
             adContainer.addView(mAdView);
             AdRequest adRequest = new AdRequest.Builder().build();
-            com.google.android.gms.ads.AdSize adSize = AdSize.LARGE_BANNER;
+            AdSize adSize = AdSize.LARGE_BANNER;
             mAdView.setAdSize(adSize);
             mAdView.loadAd(adRequest);
             mAdView.setAdListener(new AdListener() {
@@ -2824,7 +2822,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
             adContainer.removeAllViews();
             adContainer.addView(mAdView);
             AdRequest adRequest = new AdRequest.Builder().build();
-            com.google.android.gms.ads.AdSize adSize = AdSize.LARGE_BANNER;
+            AdSize adSize = AdSize.LARGE_BANNER;
             mAdView.setAdSize(adSize);
             mAdView.loadAd(adRequest);
             mAdView.setAdListener(new AdListener() {
@@ -2859,7 +2857,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
             adContainer.removeAllViews();
             adContainer.addView(mAdView);
             AdRequest adRequest = new AdRequest.Builder().build();
-            com.google.android.gms.ads.AdSize adSize = AdSize.LARGE_BANNER;
+            AdSize adSize = AdSize.LARGE_BANNER;
             mAdView.setAdSize(adSize);
             mAdView.loadAd(adRequest);
             mAdView.setAdListener(new AdListener() {
@@ -3530,9 +3528,9 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
         adChoicesContainer.addView(adOptionsView, 0);
 
         // Create native UI using the ad metadata.
-        com.facebook.ads.MediaView nativeAdIcon = adViews.findViewById(R.id.native_ad_icon);
+        MediaView nativeAdIcon = adViews.findViewById(R.id.native_ad_icon);
         TextView nativeAdTitle = adViews.findViewById(R.id.native_ad_title);
-        com.facebook.ads.MediaView nativeAdMedia = adViews.findViewById(R.id.native_ad_media);
+        MediaView nativeAdMedia = adViews.findViewById(R.id.native_ad_media);
         TextView nativeAdSocialContext = adViews.findViewById(R.id.native_ad_social_context);
         TextView nativeAdBody = adViews.findViewById(R.id.native_ad_body);
         TextView sponsoredLabel = adViews.findViewById(R.id.native_ad_sponsored_label);
@@ -5287,14 +5285,14 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
         currentAD++;
     }
 
-    private com.google.android.gms.ads.AdSize getAdSize() {
+    private AdSize getAdSize() {
         Display display = getWindowManager().getDefaultDisplay();
         DisplayMetrics outMetrics = new DisplayMetrics();
         display.getMetrics(outMetrics);
         float widthPixels = outMetrics.widthPixels;
         float density = outMetrics.density;
         int adWidth = (int) (widthPixels / density);
-        return com.google.android.gms.ads.AdSize.getPortraitAnchoredAdaptiveBannerAdSize(this, adWidth);
+        return AdSize.getPortraitAnchoredAdaptiveBannerAdSize(this, adWidth);
     }
 
     public void hideStatusBar() {

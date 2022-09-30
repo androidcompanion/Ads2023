@@ -2,7 +2,6 @@ package com.myads2023.ads.gmodels;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.graphics.drawable.Drawable;
 
 public class ConstantAds {
 
@@ -10,9 +9,8 @@ public class ConstantAds {
     public static boolean IS_INTER_SHOWING = false;
     public static ProgressDialog pDialogDelay = null;
     public static int adCountDefault = 3;
-    public static int ad_bg_drawable = 0;
-//    public static Drawable ad_bg_drawable = null;
     public static int AD_DELAY = 1500;
+    public static int ad_bg_drawable = 0;
     public static int CT_COLOR = 0;
     public static boolean PRELOAD_REWARD = false;
     public static String AD_MESSAGE = "Showing Ad...";
