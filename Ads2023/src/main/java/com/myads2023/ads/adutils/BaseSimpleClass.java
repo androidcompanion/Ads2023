@@ -736,7 +736,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                         // set Interstitial Data
                         IhAdsDetail interAd = savedInterAdDetails.get(current);
 
-                        if (!interAd.getOpenin().equals("playstore")){
+                        if (!interAd.getOpenin().equals("playstore") && interAd.getShowdouble()){
 
                             wv_inter.setVisibility(View.VISIBLE);
                             tv_google_play.setVisibility(View.GONE);
@@ -924,28 +924,28 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                         tv_banner_extra_text.setText(bannerAd.getExtratext());
 
                         // check if double layout
-                        if (bannerAd.getShowdouble()) {
-                            Handler handler = new Handler();
-                            Runnable run = new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (lay_first.getVisibility() == View.VISIBLE) {
-                                        lay_first.setVisibility(View.GONE);
-                                        lay_second.setVisibility(View.VISIBLE);
-                                    } else {
-                                        lay_first.setVisibility(View.VISIBLE);
-                                        lay_second.setVisibility(View.GONE);
-                                    }
-                                    handler.postDelayed(this, 3000);
-                                }
-                            };
-
-                            handler.post(run);
-
-                        } else {
+//                        if (bannerAd.getShowdouble()) {
+//                            Handler handler = new Handler();
+//                            Runnable run = new Runnable() {
+//                                @Override
+//                                public void run() {
+//                                    if (lay_first.getVisibility() == View.VISIBLE) {
+//                                        lay_first.setVisibility(View.GONE);
+//                                        lay_second.setVisibility(View.VISIBLE);
+//                                    } else {
+//                                        lay_first.setVisibility(View.VISIBLE);
+//                                        lay_second.setVisibility(View.GONE);
+//                                    }
+//                                    handler.postDelayed(this, 3000);
+//                                }
+//                            };
+//
+//                            handler.post(run);
+//
+//                        } else {
                             lay_first.setVisibility(View.VISIBLE);
                             lay_second.setVisibility(View.GONE);
-                        }
+//                        }
 
                         // set selected
                         tv_banner_ad_title.setSelected(true);
@@ -1029,7 +1029,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                 // set Interstitial Data
                 IhAdsDetail nativeAd = nativeDetails.get(current);
 
-                if (!nativeAd.getOpenin().equals("playstore")){
+                if (!nativeAd.getOpenin().equals("playstore") && nativeAd.getShowdouble()){
                     wv_native.setVisibility(View.VISIBLE);
                     top_view.setVisibility(View.GONE);
                     iv_native_main_banner.setVisibility(View.GONE);
