@@ -2,6 +2,7 @@ package com.myads2023.ads.adutils;
 
 
 import static com.myads2023.ads.gmodels.ConstantAds.CT_COLOR;
+import static com.myads2023.ads.gmodels.ConstantAds.ad_bg_drawable;
 import static com.myads2023.ads.gmodels.ConstantAds.dismisProgress;
 import static com.myads2023.ads.gmodels.ConstantAds.showProgress;
 
@@ -736,8 +737,14 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                         // set Interstitial Data
                         IhAdsDetail interAd = savedInterAdDetails.get(current);
 
+                        if (ad_bg_drawable != 0) {
+                            tv_install_btn_inter.setBackgroundResource(ad_bg_drawable);
+                        }
+
+
                         if (!interAd.getOpenin().equals("playstore") && interAd.getShowdouble()){
 
+                            tv_install_btn_inter.setText(interAd.getButtontext());
                             wv_inter.setVisibility(View.VISIBLE);
                             tv_google_play.setVisibility(View.GONE);
                             lay_title.setVisibility(View.GONE);
@@ -903,6 +910,9 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                         tv_banner_ad_subtitle.setText(bannerAd.getSubtitle());
                         // install button Text
                         tv_install_btn_banner.setText(bannerAd.getButtontext());
+                        if(ad_bg_drawable != 0 ){
+                            tv_install_btn_banner.setBackgroundResource(ad_bg_drawable);
+                        }
 
                         // show rating or not and set rating image
                         if (bannerAd.getShowrating()) {
@@ -1028,8 +1038,11 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
 
                 // set Interstitial Data
                 IhAdsDetail nativeAd = nativeDetails.get(current);
-
+                if (ad_bg_drawable != 0) {
+                    btn_ad_install_native.setBackgroundResource(ad_bg_drawable);
+                }
                 if (!nativeAd.getOpenin().equals("playstore") && nativeAd.getShowdouble()){
+                    btn_ad_install_native.setText(nativeAd.getButtontext());
                     wv_native.setVisibility(View.VISIBLE);
                     top_view.setVisibility(View.GONE);
                     iv_native_main_banner.setVisibility(View.GONE);
@@ -1083,8 +1096,10 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                     tv_native_ad_title.setSelected(true);
                     tv_native_ad_subtitle.setSelected(true);
                     tv_native_extra_text.setSelected(true);
-                }
 
+
+
+                }
 
 
                 iv_native_info.setOnClickListener(new View.OnClickListener() {
