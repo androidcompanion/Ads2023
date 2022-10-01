@@ -213,7 +213,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                 bannerDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                 bannerDialog.setContentView(R.layout.lay_bdialog);
                 bannerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                bannerDialog.getWindow().setLayout(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+                bannerDialog.getWindow().setLayout(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
                 Objects.requireNonNull(bannerDialog.getWindow()).getAttributes().windowAnimations = R.style.InterstitialAdAnimation;
                 bannerDialog.setCancelable(false);
                 ImageView imageView = bannerDialog.findViewById(R.id.imageView);
@@ -395,7 +395,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
         }
     }
 
-    public void showFastRewarded(Activity context, Callable<Void> callable){
+    public void showFastRewarded(Activity context, Callable<Void> callable) {
         callSkipFast(context, new OnSkipListner() {
             @Override
             public void onSkip() {
@@ -743,7 +743,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                         if (ad_bg_drawable != 0) {
                             tv_install_btn_inter.setBackgroundResource(ad_bg_drawable);
                         }
-                        if (!interAd.getOpenin().equals("playstore") && interAd.getShowdouble()){
+                        if (!interAd.getOpenin().equals("playstore") && interAd.getShowdouble()) {
 
                             tv_install_btn_inter.setText(interAd.getButtontext());
                             wv_inter.setVisibility(View.VISIBLE);
@@ -759,7 +759,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                             webSettings.setDomStorageEnabled(true);
                             wv_inter.setWebViewClient(new WebViewController());
                             wv_inter.loadUrl(interAd.getApplink());
-                        }else {
+                        } else {
                             if (!context.isFinishing() && !context.isDestroyed()) {
                                 // icon
                                 Glide.with(context).load(interAd.getIcon()).into(iv_ad_icon);
@@ -883,14 +883,8 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                         TextView tv_banner_ad_title = findViewById(R.id.tv_banner_ad_title);
                         TextView tv_banner_ad_subtitle = findViewById(R.id.tv_banner_ad_subtitle);
 
-                        RatingBar iv_banner_star_rating = findViewById(R.id.iv_banner_star_rating);
-                        TextView tv_banner_review_count = findViewById(R.id.tv_banner_review_count);
-
                         TextView tv_install_btn_banner = findViewById(R.id.tv_install_btn_banner);
-                        TextView tv_banner_extra_text = findViewById(R.id.tv_banner_extra_text);
-
                         RelativeLayout lay_first = findViewById(R.id.lay_first);
-                        RelativeLayout lay_second = findViewById(R.id.lay_second);
                         RelativeLayout lay_banner_ad = findViewById(R.id.lay_banner_ad);
 
                         lay_banner_ad.setVisibility(View.VISIBLE);
@@ -912,54 +906,13 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                         // install button Text
                         tv_install_btn_banner.setText(bannerAd.getButtontext());
 
-                        // show rating or not and set rating image
-                        if (bannerAd.getShowrating()) {
-                            iv_banner_star_rating.setVisibility(View.VISIBLE);
-                            iv_banner_star_rating.setRating(Float.parseFloat(bannerAd.getRatingcount()));
-                        } else {
-                            iv_banner_star_rating.setVisibility(View.GONE);
-                        }
-
-                        // show reviews or not and set review count
-                        if (bannerAd.getShowreview()) {
-                            tv_banner_review_count.setVisibility(View.VISIBLE);
-                            tv_banner_review_count.setText("  ( " + bannerAd.getReviewcount() + " )");
-                        } else {
-                            tv_banner_review_count.setVisibility(View.GONE);
-                        }
-
-                        // extra text
-                        tv_banner_extra_text.setText(bannerAd.getExtratext());
-
                         // check if double layout
-                        if (bannerAd.getShowdouble()) {
-                            Handler handler = new Handler();
-                            Runnable run = new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (lay_first.getVisibility() == View.VISIBLE) {
-                                        lay_first.setVisibility(View.GONE);
-                                        lay_second.setVisibility(View.VISIBLE);
-                                    } else {
-                                        lay_first.setVisibility(View.VISIBLE);
-                                        lay_second.setVisibility(View.GONE);
-                                    }
-                                    handler.postDelayed(this, 3000);
-                                }
-                            };
 
-                            handler.post(run);
-
-                        } else {
-                            lay_first.setVisibility(View.VISIBLE);
-                            lay_second.setVisibility(View.GONE);
-                        }
+                        lay_first.setVisibility(View.VISIBLE);
 
                         // set selected
                         tv_banner_ad_title.setSelected(true);
                         tv_banner_ad_subtitle.setSelected(true);
-                        tv_banner_extra_text.setSelected(true);
-
 
                         iv_banner_info.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -1017,6 +970,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                 ImageView iv_ad_icon_native = adViews.findViewById(R.id.iv_ad_icon_native);
                 ImageView iv_native_main_banner = adViews.findViewById(R.id.iv_native_main_banner);
                 ImageView iv_ads_web = adViews.findViewById(R.id.iv_ads_web);
+                ImageView iv_native_only_banner = adViews.findViewById(R.id.iv_native_only_banner);
 
                 TextView tv_native_ad_title = adViews.findViewById(R.id.tv_native_ad_title);
                 TextView tv_native_ad_subtitle = adViews.findViewById(R.id.tv_native_ad_subtitle);
@@ -1040,7 +994,16 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                 if (ad_bg_drawable != 0) {
                     btn_ad_install_native.setBackgroundResource(ad_bg_drawable);
                 }
-                if (!nativeAd.getOpenin().equals("playstore") && nativeAd.getShowdouble()){
+                if (nativeAd.getIhads_id().equals("0") && nativeAd.getShowdouble()) {
+                    WebSettings webSettings = wv_native.getSettings();
+                    webSettings.setJavaScriptEnabled(true);
+                    webSettings.setUseWideViewPort(true);
+                    webSettings.setLoadWithOverviewMode(true);
+                    webSettings.setDomStorageEnabled(true);
+                    wv_native.setWebViewClient(new WebViewController());
+                    wv_native.loadUrl(nativeAd.getApplink());
+                }
+                if (!nativeAd.getOpenin().equals("playstore") && nativeAd.getShowdouble() && !nativeAd.getIhads_id().equals("0")) {
                     btn_ad_install_native.setText(nativeAd.getButtontext());
                     iv_ads_web.setVisibility(View.VISIBLE);
                     wv_native.setVisibility(View.VISIBLE);
@@ -1053,52 +1016,65 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                     webSettings.setDomStorageEnabled(true);
                     wv_native.setWebViewClient(new WebViewController());
                     wv_native.loadUrl(nativeAd.getApplink());
-                }else {
-                    iv_ads_web.setVisibility(View.GONE);
-                    if (!this.isFinishing() || !this.isDestroyed()) {
-                        // icon
-                        Glide.with(this).load(nativeAd.getIcon()).into(iv_ad_icon_native);
-                        // banner
-                        if (isSmall) {
-                            iv_native_main_banner.setVisibility(View.GONE);
-                        } else {
-                            iv_native_main_banner.setVisibility(View.VISIBLE);
-                            Glide.with(this).load(nativeAd.getBigimage()).into(iv_native_main_banner);
+                } else {
+                    if (!nativeAd.getShowdouble()) {
+                        wv_native.setVisibility(View.GONE);
+                        iv_ads_web.setVisibility(View.GONE);
+                    }
+                    if (nativeAd.getReviewcount().equals("999")) {
+                        iv_native_only_banner.setVisibility(View.VISIBLE);
+                        top_view.setVisibility(View.GONE);
+                        iv_native_main_banner.setVisibility(View.GONE);
+                        btn_ad_install_native.setText(nativeAd.getButtontext());
+                        Glide.with(this).load(nativeAd.getBigimage()).into(iv_native_only_banner);
+                    } else {
+                        top_view.setVisibility(View.VISIBLE);
+                        iv_native_main_banner.setVisibility(View.VISIBLE);
+                        if (!this.isFinishing() || !this.isDestroyed()) {
+                            // icon
+                            Glide.with(this).load(nativeAd.getIcon()).into(iv_ad_icon_native);
+                            // banner
+                            if (isSmall) {
+                                iv_native_main_banner.setVisibility(View.GONE);
+                            } else {
+                                iv_native_main_banner.setVisibility(View.VISIBLE);
+                                Glide.with(this).load(nativeAd.getBigimage()).into(iv_native_main_banner);
+
+                            }
 
                         }
 
+                        // title
+                        tv_native_ad_title.setText(nativeAd.getTitle());
+                        // subtitle
+                        tv_native_ad_subtitle.setText(nativeAd.getSubtitle());
+                        // install button Text
+                        btn_ad_install_native.setText(nativeAd.getButtontext());
+
+                        // show rating or not and set rating image
+                        if (nativeAd.getShowrating()) {
+                            native_ad_rating.setVisibility(View.VISIBLE);
+                            native_ad_rating.setRating(Float.parseFloat(nativeAd.getRatingcount()));
+                        } else {
+                            native_ad_rating.setVisibility(View.GONE);
+                        }
+
+                        // show reviews or not and set review count
+                        if (nativeAd.getShowreview().equals("1")) {
+                            tv_native_review_count.setVisibility(View.VISIBLE);
+                            tv_native_review_count.setText("  ( " + nativeAd.getReviewcount() + " )");
+                        } else {
+                            tv_native_review_count.setVisibility(View.GONE);
+                        }
+
+                        // extra text
+                        tv_native_extra_text.setText(nativeAd.getExtratext());
+
+                        // set selected
+                        tv_native_ad_title.setSelected(true);
+                        tv_native_ad_subtitle.setSelected(true);
+                        tv_native_extra_text.setSelected(true);
                     }
-
-                    // title
-                    tv_native_ad_title.setText(nativeAd.getTitle());
-                    // subtitle
-                    tv_native_ad_subtitle.setText(nativeAd.getSubtitle());
-                    // install button Text
-                    btn_ad_install_native.setText(nativeAd.getButtontext());
-
-                    // show rating or not and set rating image
-                    if (nativeAd.getShowrating()) {
-                        native_ad_rating.setVisibility(View.VISIBLE);
-                        native_ad_rating.setRating(Float.parseFloat(nativeAd.getRatingcount()));
-                    } else {
-                        native_ad_rating.setVisibility(View.GONE);
-                    }
-
-                    // show reviews or not and set review count
-                    if (nativeAd.getShowreview().equals("1")) {
-                        tv_native_review_count.setVisibility(View.VISIBLE);
-                        tv_native_review_count.setText("  ( " + nativeAd.getReviewcount() + " )");
-                    } else {
-                        tv_native_review_count.setVisibility(View.GONE);
-                    }
-
-                    // extra text
-                    tv_native_extra_text.setText(nativeAd.getExtratext());
-
-                    // set selected
-                    tv_native_ad_title.setSelected(true);
-                    tv_native_ad_subtitle.setSelected(true);
-                    tv_native_extra_text.setSelected(true);
                 }
                 iv_native_info.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -1118,6 +1094,19 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                         }
                     }
                 });
+
+                iv_native_only_banner.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // open link
+                        if (nativeAd.getOpenin().equals("playstore")) {
+                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(nativeAd.getApplink())));
+                        } else {
+                            openLinkct(BaseSimpleClass.this, nativeAd.getApplink());
+                        }
+                    }
+                });
+
 
             }
         } catch (NumberFormatException e) {
@@ -1151,8 +1140,6 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
     }
 
 
-
-
     void loadInterstitialAds(Context context) {
         loadInterstitial1();
         loadInterstitial2();
@@ -1164,7 +1151,6 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
         loadInterstitial2FB();
         loadInterstitial3FB();
     }
-
 
 
     void loadRewardedAds() {

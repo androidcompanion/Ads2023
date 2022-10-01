@@ -16,6 +16,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
+    <ImageView
+        android:background="@android:color/white"
+        android:id="@+id/iv_native_only_banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/bottom_view"
+        android:layout_alignParentTop="true"
+        android:adjustViewBounds="true"
+        android:gravity="center" />
 
     <ImageView
         android:visibility="gone"
@@ -30,6 +39,7 @@
 
 
     <RelativeLayout
+        android:background="@android:color/white"
         android:paddingBottom="1dp"
         android:paddingEnd="3dp"
         android:paddingStart="3dp"
@@ -80,7 +90,7 @@
                 android:scrollHorizontally="true"
                 android:singleLine="true"
                 android:text="Sub Title"
-                android:textColor="@color/semi_gray_ad"
+                android:textColor="@android:color/secondary_text_light"
                 android:textSize="14sp" />
 
 
@@ -117,6 +127,7 @@
     </RelativeLayout>
 
     <ImageView
+        android:background="@android:color/white"
         android:id="@+id/iv_native_main_banner"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -126,6 +137,7 @@
         android:gravity="center" />
 
     <RelativeLayout
+        android:background="@android:color/white"
         android:id="@+id/bottom_view"
         android:layout_width="match_parent"
         android:layout_height="50.0dip"

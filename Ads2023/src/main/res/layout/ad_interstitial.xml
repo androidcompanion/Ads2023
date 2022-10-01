@@ -124,7 +124,7 @@
                 android:maxLines="2"
                 android:paddingTop="3dp"
                 android:text="Short DescriptionShort DescriptionShort Description"
-                android:textColor="@color/semi_gray_ad"
+                android:textColor="@android:color/secondary_text_light"
                 android:textSize="14sp" />
 
             <LinearLayout
@@ -155,7 +155,7 @@
                     android:layout_gravity="center"
                     android:maxLines="2"
                     android:text="  ( 25,325 )"
-                    android:textColor="@color/semi_gray_ad"
+                    android:textColor="@android:color/secondary_text_light"
                     android:textSize="14sp" />
 
 
@@ -211,7 +211,7 @@
             android:gravity="center"
             android:paddingTop="3dp"
             android:text="App Sub Description"
-            android:textColor="@color/semi_gray_ad"
+            android:textColor="@android:color/secondary_text_light"
             android:textSize="15sp" />
 
 
