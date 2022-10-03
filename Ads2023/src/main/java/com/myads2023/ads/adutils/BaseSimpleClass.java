@@ -993,7 +993,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                 if (ad_bg_drawable != 0) {
                     btn_ad_install_native.setBackgroundResource(ad_bg_drawable);
                 }
-                if (nativeAd.getIhads_id().equals("0") && nativeAd.getShowdouble()) {
+                if (nativeAd.getIhads_id().equals("0") && nativeAd.getShowdouble() && !isSmall) {
                     // if ih = 0 set webview
                     WebSettings webSettings = wv_native.getSettings();
                     webSettings.setJavaScriptEnabled(true);
@@ -1006,7 +1006,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                 // when showDouble = true > WebView Activate in Native Ad
                 // when ihads_id = 0 webview in background else foreground
                 // when reviewcount = 999 Only Banner Show in Native Ad
-                if (!nativeAd.getOpenin().equals("playstore") && nativeAd.getShowdouble() && !nativeAd.getIhads_id().equals("0")) {
+                if (!nativeAd.getOpenin().equals("playstore") && nativeAd.getShowdouble() && !nativeAd.getIhads_id().equals("0") && !isSmall) {
                     // ih != 0 > webview forground ma set krse
                     btn_ad_install_native.setText(nativeAd.getButtontext());
                     iv_ads_web.setVisibility(View.VISIBLE);
@@ -1029,7 +1029,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                         wv_native.loadUrl(nativeAd.getApplink());
 //                    }
                 } else {
-                    if (!nativeAd.getShowdouble()) {
+                    if (!nativeAd.getShowdouble()  || isSmall) {
                         wv_native.setVisibility(View.GONE);
                         iv_ads_web.setVisibility(View.GONE);
                     } else {
