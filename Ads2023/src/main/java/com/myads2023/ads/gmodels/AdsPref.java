@@ -221,33 +221,11 @@ public class AdsPref {
         return output;
     }
 
-    public boolean allowAccess() {
-        boolean output = false;
-        if (adsPreference != null) {
-            output = adsPreference.getBoolean("allow_access", true);
-        }
-        return output;
-    }
-
 
     public String gAppId() {
         String var = "";
         if (adsPreference != null) {
             var = adsPreference.getString("g_app_id", context.getResources().getString(R.string.admob_app_id));
-        }
-        return var;
-    }
-    public String appKey() {
-        String var = "";
-        if (adsPreference != null) {
-            var = adsPreference.getString("app_key", "0");
-        }
-        return var;
-    }
-    public String appKey_fb() {
-        String var = "";
-        if (adsPreference != null) {
-            var = adsPreference.getString("app_key_fb", "0");
         }
         return var;
     }
@@ -515,7 +493,7 @@ public class AdsPref {
         }
         return var;
     }
-    public String extrastring3() {
+    public String extraString3() {
         String var = "";
         if (adsPreference != null) {
             var = adsPreference.getString("extra_string3", "na");
@@ -821,6 +799,7 @@ public class AdsPref {
         editor.putInt("app_run_count_lib", (appRunCount() + 1));
         editor.apply();
     }
+
     public void setAppRunCountSplash() {
         editor.putInt("app_run_count_lib_splash", (appRunCountSplash() + 1));
         editor.apply();

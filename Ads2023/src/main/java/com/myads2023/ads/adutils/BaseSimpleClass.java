@@ -635,18 +635,6 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
         return installer != null && validInstallers.contains(installer);
     }
 
-    public void validateInstall(Callable<Void> callable) {
-        if (!adsPref.allowAccess()) {
-            if (!isvalidInstall) {
-                try {
-                    callable.call();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
 
     int getCurrentInterAd(int totalAds) {
         if (!isFirstIHInter) {
@@ -1013,23 +1001,18 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                     top_view.setVisibility(View.GONE);
                     iv_native_main_banner.setVisibility(View.GONE);
 
-//                    if (nativeAd.getReviewcount().equals("999") && !isSmall) {
-//                        wv_native.setVisibility(View.GONE);
-//                        iv_native_only_banner.setVisibility(View.VISIBLE);
-//                        Glide.with(this).load(nativeAd.getBigimage()).into(iv_native_only_banner);
-//                    } else {
-                        wv_native.setVisibility(View.VISIBLE);
-                        iv_native_only_banner.setVisibility(View.GONE);
-                        WebSettings webSettings = wv_native.getSettings();
-                        webSettings.setJavaScriptEnabled(true);
-                        webSettings.setUseWideViewPort(true);
-                        webSettings.setLoadWithOverviewMode(true);
-                        webSettings.setDomStorageEnabled(true);
-                        wv_native.setWebViewClient(new WebViewController());
-                        wv_native.loadUrl(nativeAd.getApplink());
-//                    }
+                    wv_native.setVisibility(View.VISIBLE);
+                    iv_native_only_banner.setVisibility(View.GONE);
+                    WebSettings webSettings = wv_native.getSettings();
+                    webSettings.setJavaScriptEnabled(true);
+                    webSettings.setUseWideViewPort(true);
+                    webSettings.setLoadWithOverviewMode(true);
+                    webSettings.setDomStorageEnabled(true);
+                    wv_native.setWebViewClient(new WebViewController());
+                    wv_native.loadUrl(nativeAd.getApplink());
+
                 } else {
-                    if (!nativeAd.getShowdouble()  || isSmall) {
+                    if (!nativeAd.getShowdouble() || isSmall) {
                         wv_native.setVisibility(View.GONE);
                         iv_ads_web.setVisibility(View.GONE);
                     } else {
@@ -1170,17 +1153,8 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
     }
 
     public void AppService(String versionName) {
-
-        if (adsPref.allowAccess()) {
-            if (isConnected(this) && !isServiceDialogShown) {
-                serviceDialog(versionName);
-            }
-        } else {
-            if (isvalidInstall) {
-                if (isConnected(this) && !isServiceDialogShown) {
-                    serviceDialog(versionName);
-                }
-            }
+        if (isConnected(this) && !isServiceDialogShown) {
+            serviceDialog(versionName);
         }
     }
 
