@@ -18,5 +18,7 @@
             android:name="com.facebook.ads.AudienceNetworkActivity"
             android:hardwareAccelerated="true" />
 
+
+
     </application>
 </manifest>

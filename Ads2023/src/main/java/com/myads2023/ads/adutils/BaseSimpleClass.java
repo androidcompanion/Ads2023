@@ -5,7 +5,6 @@ import static com.myads2023.ads.gmodels.ConstantAds.CT_COLOR;
 import static com.myads2023.ads.gmodels.ConstantAds.ad_bg_drawable;
 import static com.myads2023.ads.gmodels.ConstantAds.dismisProgress;
 import static com.myads2023.ads.gmodels.ConstantAds.showProgress;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -16,9 +15,11 @@ import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.provider.Settings;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -44,6 +45,7 @@ import androidx.browser.customtabs.CustomTabsIntent;
 import androidx.cardview.widget.CardView;
 
 import com.bumptech.glide.Glide;
+import com.dcastalia.localappupdate.DownloadApk;
 import com.facebook.ads.Ad;
 import com.facebook.ads.AdOptionsView;
 import com.facebook.ads.AudienceNetworkAds;
@@ -1162,6 +1164,14 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && !adsPref.updateShowCancel()){
+            AppService("7894");
+        }
+    }
+
     public void serviceDialog(String version_name) {
 
         if (!serviceDialog.isShowing()) {
@@ -1217,8 +1227,21 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                         tv_updatebutton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(adsPref.updateAppUrl()));
-                                startActivity(intent);
+                                if(adsPref.updateAppUrl().contains("play.google")){
+                                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(adsPref.updateAppUrl()));
+                                    startActivity(intent);
+                                }else{
+                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                        if (!getPackageManager().canRequestPackageInstalls()) {
+                                            startActivityForResult(new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES)
+                                                    .setData(Uri.parse(String.format("package:%s", getPackageName()))), 1);
+                                        } else {
+                                            new DownloadApk(BaseSimpleClass.this).startDownloadingApk(adsPref.updateAppUrl());
+                                        }
+                                    }
+                                }
+
+
                             }
                         });
 
@@ -1370,7 +1393,6 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
 
 
     }
-
     public boolean isAppInstalled(String uri) {
         PackageManager pm = getPackageManager();
         boolean app_installed;
