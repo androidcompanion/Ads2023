@@ -12,8 +12,9 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
 }
-rootProject.name = "Ads2023_Offline"
+rootProject.name = "Ads2023"
 include ':app'
 include ':Ads2023'
