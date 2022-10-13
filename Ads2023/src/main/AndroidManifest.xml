@@ -19,6 +19,5 @@
             android:hardwareAccelerated="true" />
 
 
-
     </application>
 </manifest>
