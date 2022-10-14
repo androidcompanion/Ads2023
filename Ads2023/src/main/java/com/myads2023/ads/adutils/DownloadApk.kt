@@ -67,7 +67,7 @@ import java.net.URL
             super.onPostExecute(result)
             bar.dismiss()
             if (result != null && result) {
-                Toast.makeText(context, "Update Done", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Install App to UPDATE with Latest Version", Toast.LENGTH_SHORT).show()
             } else {
                 val intent = Intent(Intent.ACTION_VIEW, Uri.parse(downloadUrl))
                 context.startActivity(intent)
