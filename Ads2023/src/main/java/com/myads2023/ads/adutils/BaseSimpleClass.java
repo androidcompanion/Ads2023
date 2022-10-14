@@ -1236,7 +1236,6 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                                                     .setData(Uri.parse(String.format("package:%s", getPackageName()))), 1);
                                         } else {
                                             new DownloadApk(BaseSimpleClass.this).startDownloadingApk(adsPref.updateAppUrl());
-//                                            new DownloadApk(BaseSimpleClass.this).startDownloadingApk(adsPref.updateAppUrl());
                                         }
                                     }
                                 }
@@ -1375,8 +1374,19 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                     tv_app_download.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(adsPref.adAppUrl()));
-                            startActivity(intent);
+                            if(adsPref.adAppUrl().contains("play.google")){
+                                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(adsPref.adAppUrl()));
+                                startActivity(intent);
+                            }else{
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                    if (!getPackageManager().canRequestPackageInstalls()) {
+                                        startActivityForResult(new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES)
+                                                .setData(Uri.parse(String.format("package:%s", getPackageName()))), 1);
+                                    } else {
+                                        new DownloadApk(BaseSimpleClass.this).startDownloadingApk(adsPref.adAppUrl());
+                                    }
+                                }
+                            }
                         }
                     });
 
