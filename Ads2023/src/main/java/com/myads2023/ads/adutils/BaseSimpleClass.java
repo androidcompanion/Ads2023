@@ -1230,14 +1230,15 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(adsPref.updateAppUrl()));
                                     startActivity(intent);
                                 }else{
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                        if (!getPackageManager().canRequestPackageInstalls()) {
-                                            startActivityForResult(new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES)
-                                                    .setData(Uri.parse(String.format("package:%s", getPackageName()))), 1);
-                                        } else {
-                                            new DownloadApk(BaseSimpleClass.this).startDownloadingApk(adsPref.updateAppUrl());
-                                        }
-                                    }
+                                    openLinkct(BaseSimpleClass.this, adsPref.updateAppUrl());
+//                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                                        if (!getPackageManager().canRequestPackageInstalls()) {
+//                                            startActivityForResult(new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES)
+//                                                    .setData(Uri.parse(String.format("package:%s", getPackageName()))), 1);
+//                                        } else {
+//                                            new DownloadApk(BaseSimpleClass.this).startDownloadingApk(adsPref.updateAppUrl());
+//                                        }
+//                                    }
                                 }
 
 
@@ -1299,14 +1300,16 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(adsPref.adAppUrl()));
                                     startActivity(intent);
                                 }else{
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                        if (!getPackageManager().canRequestPackageInstalls()) {
-                                            startActivityForResult(new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES)
-                                                    .setData(Uri.parse(String.format("package:%s", getPackageName()))), 1);
-                                        } else {
-                                            new DownloadApk(BaseSimpleClass.this).startDownloadingApk(adsPref.adAppUrl());
-                                        }
-                                    }
+//                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                                        if (!getPackageManager().canRequestPackageInstalls()) {
+//                                            startActivityForResult(new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES)
+//                                                    .setData(Uri.parse(String.format("package:%s", getPackageName()))), 1);
+//                                        } else {
+//                                            new DownloadApk(BaseSimpleClass.this).startDownloadingApk(adsPref.adAppUrl());
+//                                        }
+//                                    }
+                                    openLinkct(BaseSimpleClass.this, adsPref.adAppUrl());
+
                                 }
                             }
                         });
@@ -1378,14 +1381,7 @@ public class BaseSimpleClass extends AppCompatActivity implements NetworkStateRe
                                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(adsPref.adAppUrl()));
                                 startActivity(intent);
                             }else{
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                    if (!getPackageManager().canRequestPackageInstalls()) {
-                                        startActivityForResult(new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES)
-                                                .setData(Uri.parse(String.format("package:%s", getPackageName()))), 1);
-                                    } else {
-                                        new DownloadApk(BaseSimpleClass.this).startDownloadingApk(adsPref.adAppUrl());
-                                    }
-                                }
+                                openLinkct(BaseSimpleClass.this, adsPref.adAppUrl());
                             }
                         }
                     });
